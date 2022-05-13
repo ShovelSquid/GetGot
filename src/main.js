@@ -17,8 +17,10 @@ let config = {
     scale: {
         mode: Phaser.Scale.FIT,
     },
-    pixelArt: true,
+    pixelArt: false,
 };
+
+const SCALE = 1;
 
 let game = new Phaser.Game(config);
 

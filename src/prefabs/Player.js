@@ -15,6 +15,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.speedx = 0;
         this.speedy = 0;
 
+        this.setScale(SCALE);
+
         this.setMaxVelocity(this.SPEED);
         this.setDrag(this.DRAG, this.DRAG);
 
@@ -22,6 +24,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.kDown = keys[1];
         this.kLeft = keys[2];
         this.kRight = keys[3];
+
+        this.anims.play('player_triangle_idle');
     }
 
     update(delta) {
@@ -30,52 +34,55 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         if (this.kUp.isDown) {
             accely -= this.ACCELERATION;
+            if (this.anims.currentAnim.key !== 'player_triangle_run') {
+                this.anims.play('player_triangle_run');
+            }
         }
         if (this.kDown.isDown) {
             accely += this.ACCELERATION;
+            if (this.anims.currentAnim.key !== 'player_triangle_run') {
+                this.anims.play('player_triangle_run');
+            }
         }
         if (this.kLeft.isDown) {
             accelx -= this.ACCELERATION;
+            if (this.anims.currentAnim.key !== 'player_triangle_run') {
+                this.anims.play('player_triangle_run');
+            }
         }
         if (this.kRight.isDown) {
             accelx += this.ACCELERATION;
+            if (this.anims.currentAnim.key !== 'player_triangle_run') {
+                this.anims.play('player_triangle_run');
+            }
+        }
+
+        if (accelx == 0 && accely == 0) {
+            if (this.anims.currentAnim.key !== 'player_triangle_idle') {
+                this.anims.play('player_triangle_idle');
+            }
+        }
+        if (accelx < 0) {
+            this.setFlipX(1);
+        }
+
+        if (accelx > 0) {
+            this.setFlipX(0);
         }
 
         this.setAcceleration(accelx, accely);
-        // if (accelx == 0) {
-        //     if (this.speedx > 0) {
-        //         accelx -= delta*this.DRAG;
-        //     }
-        //     if (this.speedx < 0) {
-        //         accelx += delta*this.DRAG;
-        //     }
-        // }  
-        // if (accely == 0) {
-        //     if (this.speedy > 0) {
-        //         accely -= this.DRAG*delta;
-        //     }
-        //     if (this.speedy < 0) {
-        //         accely += this.DRAG*delta;
-        //     }
-        // }
+    }
 
-        // this.speedx += delta*accelx;
-        // this.speedy += delta*accely;
-
-        // if (this.speedx*this.speedx+this.speedy*this.speedy>this.SPEED*this.SPEED) {
-        //     let mag = Math.sqrt(this.speedx*this.speedx+this.speedy*this.speedy);
-        //     this.speedx = this.SPEED * this.speedx / mag;
-        //     this.speedy = this.SPEED * this.speedy / mag;
-        // }
-
-        // if (Math.abs(this.speedx) < 10) {
-        //     this.speedx = 0;
-        // }
-        // if (Math.abs(this.speedy) < 10) {
-        //     this.speedy = 0;
-        // }
-
-        // this.x += delta*this.speedx;
-        // this.y += delta*this.speedy;
+    playAnimation(key) {
+        if (key == 'run') {
+            if (!this.anims.isPlaying('player_triangle_run')) {
+                this.anims.play('player_triangle_run');
+            }
+        }
+        else if (key == 'idle') {
+            if (!this.anims.isPlaying('player_triangle_idle')) {
+                this.anims.play('player_triangle_idle');
+            }
+        }
     }
 }
