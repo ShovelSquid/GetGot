@@ -4,7 +4,7 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('frog', './assets/FROG-200.png');
+        this.load.image('player', './assets/triangle.png');
     }
 
     create() {
@@ -20,8 +20,8 @@ class Play extends Phaser.Scene {
         keyA = this.input.keyboard.addKey(KeyCodes.A);
         keyD = this.input.keyboard.addKey(KeyCodes.D);
 
-        this.player1 = new Player(this, 100, 200, 'frog', 0, [keyW, keyS, keyA, keyD]);
-        this.player2 = new Player(this, 300, 200, 'frog', 0, [keyUp, keyDown, keyLeft, keyRight]);
+        this.player1 = new Player(this, 100, 200, 'player', 0, [keyW, keyS, keyA, keyD]);
+        this.player2 = new Player(this, 300, 200, 'player', 0, [keyUp, keyDown, keyLeft, keyRight]);
     }
 
     update(time, delta) {
