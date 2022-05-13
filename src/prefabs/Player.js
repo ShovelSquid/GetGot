@@ -46,6 +46,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         } else {
             this.setDrag(this.DRAG, this.DRAG);
             this.setMaxVelocity(this.SPEED, this.SPEED);
+            this.setCollideWorldBounds(true, 0, 0);
+
             if (this.kUp.isDown) {
                 accely -= this.ACCELERATION;
             }

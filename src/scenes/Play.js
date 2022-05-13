@@ -5,10 +5,14 @@ class Play extends Phaser.Scene {
 
     preload() {
         this.load.image('player', './assets/triangle.png');
+        this.load.image('frog', './assets/FROG-200.png');
+        this.load.image('background', './assets/background.png');
     }
 
     create() {
         const KeyCodes = Phaser.Input.Keyboard.KeyCodes;
+
+        this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
         
         keyUp = this.input.keyboard.addKey(KeyCodes.UP);
         keyDown = this.input.keyboard.addKey(KeyCodes.DOWN);
