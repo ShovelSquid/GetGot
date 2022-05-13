@@ -5,7 +5,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
 
         this.scene.add.existing(this);
-        console.log(this.scene);
         this.scene.physics.add.existing(this);
 
         this.SPEED = 500;
@@ -26,7 +25,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.kDown = keys[1];
         this.kLeft = keys[2];
         this.kRight = keys[3];
-
        
         this.kSlash = keys[4];
         this.kCharge = keys[5];
@@ -51,25 +49,25 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (this.kUp.isDown) {
                 accely -= this.ACCELERATION;
-                if (this.anims.currentAnim.key !== 'player_triangle_run') {
+                if (!this.kCharge.isDown && this.anims.currentAnim.key !== 'player_triangle_run') {
                     this.anims.play('player_triangle_run');
                 }
             }
             if (this.kDown.isDown) {
                 accely += this.ACCELERATION;
-                if (this.anims.currentAnim.key !== 'player_triangle_run') {
+                if (!this.kCharge.isDown && this.anims.currentAnim.key !== 'player_triangle_run') {
                     this.anims.play('player_triangle_run');
                 }
             }
             if (this.kLeft.isDown) {
                 accelx -= this.ACCELERATION;
-                if (this.anims.currentAnim.key !== 'player_triangle_run') {
+                if (!this.kCharge.isDown && this.anims.currentAnim.key !== 'player_triangle_run') {
                     this.anims.play('player_triangle_run');
                 }
             }
             if (this.kRight.isDown) {
                 accelx += this.ACCELERATION;
-                if (this.anims.currentAnim.key !== 'player_triangle_run') {
+                if (!this.kCharge.isDown && this.anims.currentAnim.key !== 'player_triangle_run') {
                     this.anims.play('player_triangle_run');
                 }
             }
@@ -80,6 +78,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.kCharge.isDown) {
             this.setMaxVelocity(this.SPEED / 10);
             this.charge += delta;
+            if (this.anims.currentAnim.key !== 'player_triangle_charge') {
+                this.anims.play('player_triangle_charge');
+            }
         }
         if (Phaser.Input.Keyboard.JustUp(this.kCharge)) {
             const factor = 10;
@@ -92,7 +93,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         
         if (accelx == 0 && accely == 0) {
-            if (this.anims.currentAnim.key !== 'player_triangle_idle') {
+            if (!this.kCharge.isDown && this.anims.currentAnim.key !== 'player_triangle_idle') {
                 this.anims.play('player_triangle_idle');
             }
         }
