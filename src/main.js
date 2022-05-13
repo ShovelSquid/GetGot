@@ -7,7 +7,7 @@ let config = {
     scene: [Menu, Play],
     fps: 60,
     physics: {
-        defaults: 'arcade',
+        default: 'arcade',
         arcade: {
             useTree: true,
             gravity: { y: 0 },
