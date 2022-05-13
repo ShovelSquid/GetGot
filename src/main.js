@@ -27,3 +27,6 @@ let game = new Phaser.Game(config);
 // define global keys
 let keyW, keyS, keyA, keyD;
 let keyUp, keyDown, keyLeft, keyRight;
+
+let keyF, keyG;
+let keyComma, keyPeriod;
