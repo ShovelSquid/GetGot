@@ -22,9 +22,14 @@ class Play extends Phaser.Scene {
             startFrame: 0,
             endFrame: 4
         });
+        this.load.spritesheet('splurt', './assets/splurt-sheet.png', {
+            frameWidth: 100,
+            frameHeight: 100,
+            startFrame: 0,
+            endFrame: 1
+        });
         this.load.image('frog', './assets/FROG-200.png');
         this.load.image('background', './assets/background.png');
-        this.load.image('splurt', './assets/Particles.png');
         this.load.image('poof', './assets/poof.png');
     }
 

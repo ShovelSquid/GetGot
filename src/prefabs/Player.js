@@ -7,8 +7,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Arcade Physics
         this.SPEED = 500;
-        this.ACCELERATION = 10000;
-        this.DRAG = this.ACCELERATION / 2;
+        this.ACCELERATION = 5000;
+        this.DRAG = this.ACCELERATION * 0.5;
         this.setMaxVelocity(this.SPEED);
         this.setDrag(this.DRAG, this.DRAG);
 
@@ -18,6 +18,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // Visuals
         this.setScale(SCALE);
         this.color = texture.replace('player', '');
+        let frameREF = 0;
+        if (this.color == 'RED') {
+            frameREF = 1;
+        }
+        else if (this.color == 'BLUE') {
+            frameREF = 0;
+        }
 
 
         this.setCollideWorldBounds(true, 0, 0);
@@ -42,6 +49,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             speed: {min: 200, max: 750},
             lifespan: {min: 700, max: 900},
             scale: {start: 1.0, end: 0.1},
+            frame: frameREF,
             on: false,
         });
         this.walkPoofVFXEffect = this.scene.poofVFXManager.createEmitter({
@@ -110,7 +118,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         if (!this.isLAUNCHING && this.kCharge.isDown && this.charge < 1.5) {
-            this.setMaxVelocity(this.SPEED / 10);
+            this.setMaxVelocity(this.SPEED / 30);
             this.isCHARGING = true;
             this.charge += delta;
             if (this.anims.currentAnim.key !== this.color+'player_triangle_charge') {
