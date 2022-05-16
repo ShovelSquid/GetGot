@@ -30,7 +30,7 @@ class Play extends Phaser.Scene {
         });
         this.anims.create({
             key: 'player_triangle_charge',
-            frames: this.anims.generateFrameNumbers('player', {start: 0, end: 2}),
+            frames: this.anims.generateFrameNumbers('player', {start: 0, end: 4}),
             frameRate: 12,
             repeat: -1
         });
