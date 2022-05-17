@@ -4,6 +4,10 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
+        this.load.audio('bloodexplode', './assets/bloodexplode.wav');
+        this.load.audio('hitwall', './assets/hitwall.wav');
+        this.load.audio('schmack', './assets/schmack.wav');
+
         this.load.spritesheet('REDplayer', './assets/Player_Triangle-Sheet.png', {
             frameWidth: 100,
             frameHeight: 100,
@@ -34,6 +38,10 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.bloodexplode = this.sound.add('bloodexplode');
+        this.hitwall = this.sound.add('hitwall');
+        this.schmack = this.sound.add('schmack');
+
         // RED Player Animations
         this.anims.create({
             key: 'REDplayer_triangle_idle',

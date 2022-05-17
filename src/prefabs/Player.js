@@ -81,7 +81,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
        
         if (this.charge > 0 && !this.isCHARGING) {
             this.setDrag(0, 0);
-            
+
             this.charge -= delta;
         } else {
             this.setDrag(this.DRAG, this.DRAG);
@@ -161,7 +161,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         else if (!this.isEXPLODING) {
             // die
             console.log("EPXLEOKDOEKFOJOSJIGJ");
+
             this.scene.cameras.main.shake(450, 0.022);
+            this.scene.schmack.play();
+            this.scene.bloodexplode.play();
             this.isEXPLODING = true;
             this.alpha = 0;
             this.scene.physics.pause();
