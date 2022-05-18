@@ -19,7 +19,7 @@ class Play extends Phaser.Scene {
             frameHeight: 100,
             startFrame: 0,
             endFrame: 11
-        })
+        });
         this.load.spritesheet('explosion', './assets/explosionado-Sheet.png', {
             frameWidth: 32,
             frameHeight: 32,
@@ -32,16 +32,32 @@ class Play extends Phaser.Scene {
             startFrame: 0,
             endFrame: 1
         });
+        this.load.spritesheet('slash', './assets/slash.png', {
+            frameWidth: 100,
+            frameHeight: 100,
+            startFrame: 0,
+            endFrame: 2
+        });
+        this.load.spritesheet('wall', './assets/Wall-Sheet.png', {      // Tiled tilesheet
+            frameWidth: 100,
+            frameHeight: 100,
+            startFrame: 0,
+            endFrame: 9,
+        });
+        this.load.tilemapTiledJSON('wall_map', './assets/tilemap01.json');       // Adds Tiled tilemap 
         this.load.image('frog', './assets/FROG-200.png');
         this.load.image('background', './assets/background.png');
         this.load.image('poof', './assets/poof.png');
-        this.load.image('slash', './assets/slash.png');
     }
 
     create() {
         this.bloodexplode = this.sound.add('bloodexplode');
         this.hitwall = this.sound.add('hitwall');
         this.schmack = this.sound.add('schmack');
+
+        const map = this.add.tilemap('wall_map');
+
+        const tileset = map.addTilesetImage('walls', 'wall');
 
         // RED Player Animations
         this.anims.create({
@@ -82,12 +98,39 @@ class Play extends Phaser.Scene {
             repeat: -1
         });
 
+        // Wall anims
+        this.anims.create({
+            key: 'wall_idle',
+            frames: this.anims.generateFrameNumbers('wall', {start: 0, end: 4}),
+            frameRate: 12,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'wall_hurt',
+            frames: this.anims.generateFrameNumbers('wall', {start: 5, end: 5}),
+            frameRate: 0,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'wall_break',
+            frames: this.anims.generateFrameNumbers('wall', {start: 6, end: 9}), 
+            frameRate: 12,
+            repeat: -1
+        });
+
         // Effect Animations
         this.anims.create({ 
             key: 'explode',
             frames: this.anims.generateFrameNames('explosion', {start: 0, end: 4}),
             frameRate: 12
         });
+        this.anims.create({
+            key: 'player_slash',
+            frames: this.anims.generateFrameNumbers('slash', {start: 0, end: 2}),
+            frameRate: 24,
+            repeat: -1
+        });
+
         const KeyCodes = Phaser.Input.Keyboard.KeyCodes;
 
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
