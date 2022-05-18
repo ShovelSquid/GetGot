@@ -7,6 +7,8 @@ class Play extends Phaser.Scene {
         this.load.audio('bloodexplode', './assets/bloodexplode.wav');
         this.load.audio('hitwall', './assets/hitwall.wav');
         this.load.audio('schmack', './assets/schmack.wav');
+        this.load.audio('walking', './assets/walking.wav');
+        this.load.audio('charging', './assets/charging.wav');
 
         this.load.spritesheet('REDplayer', './assets/Player_Triangle-Sheet.png', {
             frameWidth: 100,
@@ -41,6 +43,9 @@ class Play extends Phaser.Scene {
         this.bloodexplode = this.sound.add('bloodexplode');
         this.hitwall = this.sound.add('hitwall');
         this.schmack = this.sound.add('schmack');
+        this.walking = this.sound.add('walking');
+        this.charging = this.sound.add('charging');
+
 
         // RED Player Animations
         this.anims.create({
