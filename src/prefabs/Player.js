@@ -178,8 +178,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 }                
             }
         }
-        
-    
             
         }
 
@@ -193,7 +191,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         if (Phaser.Input.Keyboard.JustUp(this.kCharge) || this.charge >= 1.5) {
             this.isCHARGING = false;
-            
             const factor = 8 * this.charge;
             let velo = this.body.velocity.normalize();
             velo.x *= factor * this.SPEED;

@@ -190,7 +190,21 @@ class Play extends Phaser.Scene {
         const map = this.add.tilemap('wall_map');
 
         const tileset = map.addTilesetImage('Wall-Sheet', 'wall');
-        const worldLayer = map.createLayer("Tile Layer 1", tileset, 0, 0);
+        const wallLayer = map.createLayer("Tile Layer 1", tileset, 0, 0);
+        const supercoollayer = map.createLayer("Tile Layer 2", tileset, 0, 0);
+
+        wallLayer.setCollisionByProperty({
+            collides: true,
+        });
+
+        this.physics.add.collider(this.players, wallLayer, null, null, this, () => {
+            console.log("TOUCH ME");
+        });
+        // there's just no collision for a reason, one which I refuse to believe
+        // this.physics.add.overlap(this.player1, supercoollayer, () => {
+        //     console.log("WEIRJIOWEJR");
+        // })
+
     }
 
     update(time, delta) {
