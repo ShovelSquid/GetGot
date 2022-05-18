@@ -108,75 +108,77 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         } else {
             
             
-            this.setCollideWorldBounds(true, 0, 0);
-            this.isLAUNCHING = false;
+        this.setCollideWorldBounds(true, 0, 0);
+        this.isLAUNCHING = false;
 
-            if (!this.isSLASHING) {
-                this.setDrag(this.DRAG, this.DRAG);
-                this.setMaxVelocity(this.SPEED, this.SPEED);
+        if (!this.isSLASHING) {
+            this.setDrag(this.DRAG, this.DRAG);
+            this.setMaxVelocity(this.SPEED, this.SPEED);
 
-                if (this.kUp.isDown) {
-                    accely -= this.ACCELERATION;
-                    if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                        this.anims.play(this.color+'player_triangle_run');
-                    }
-                }
-                if (this.kDown.isDown) {
-                    accely += this.ACCELERATION;
-                    if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                        this.anims.play(this.color+'player_triangle_run');
-                    }
-                }
-                if (this.kLeft.isDown) {
-                    accelx -= this.ACCELERATION;
-                    if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                        this.anims.play(this.color+'player_triangle_run');
-                    }
-                }
-                if (this.kRight.isDown) {
-                    accelx += this.ACCELERATION;
-                    if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                        this.anims.play(this.color+'player_triangle_run');
-                    }
-                }
-
-                if (Phaser.Input.Keyboard.JustDown(this.kSlash)) {
-                    if (accelx != 0 || accely != 0) {
-                        this.isSLASHING = true;
-                        this.setDrag(3 * this.DRAG, 3 * this.DRAG);
-                        let vec = new Phaser.Math.Vector2(accelx, accely).normalize();
-                        const factor = 110;
-                        vec.x *= factor;
-                        vec.y *= factor;
-                        let slash = this.scene.add.sprite(this.x + vec.x, 
-                                                          this.y + vec.y, 'slash');
-                        this.scene.physics.add.existing(slash);
-                        slash.body.immovable = true;
-                        slash.rotation = vec.angle()+Math.PI/2;
-
-                        let destoryCall = this.scene.time.delayedCall(500, () => {
-                            slash.destroy();
-                            this.isSLASHING = false;
-                        });
-
-                        let blocked = false;
-                        this.scene.physics.add.overlap(this.scene.players, slash, (player, sl) => {
-                            if (player != this && !blocked) {
-                                blocked = true;
-                                console.log("Get blocked!");
-                                let vec = player.body.velocity;
-                                player.body.velocity = new Phaser.Math.Vector2(-vec.x, -vec.y);
-                                destoryCall.elapsed = destoryCall.delay;
-                            }
-                            
-                        });
-                        
-                        accelx = 0; accely = 0;
-                        
-                    }                
+            if (this.kUp.isDown) {
+                accely -= this.ACCELERATION;
+                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
+                    this.anims.play(this.color+'player_triangle_run');
                 }
             }
-            
+            if (this.kDown.isDown) {
+                accely += this.ACCELERATION;
+                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
+                    this.anims.play(this.color+'player_triangle_run');
+                }
+            }
+            if (this.kLeft.isDown) {
+                accelx -= this.ACCELERATION;
+                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
+                    this.anims.play(this.color+'player_triangle_run');
+                }
+            }
+            if (this.kRight.isDown) {
+                accelx += this.ACCELERATION;
+                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
+                    this.anims.play(this.color+'player_triangle_run');
+                }
+            }
+
+            if (Phaser.Input.Keyboard.JustDown(this.kSlash)) {
+                if (accelx != 0 || accely != 0) {
+                    this.isSLASHING = true;
+                    this.setDrag(3 * this.DRAG, 3 * this.DRAG);
+                    let vec = new Phaser.Math.Vector2(accelx, accely).normalize();
+                    const factor = 110;
+                    vec.x *= factor;
+                    vec.y *= factor;
+                    let slash = this.scene.add.sprite(this.x + vec.x, this.y + vec.y, 'slash');
+                    slash.anims.play('player_slash');
+                    slash.on('animationcomplete', () => {
+                        slash.destroy();
+                    })
+                    this.scene.physics.add.existing(slash);
+                    slash.body.immovable = true;
+                    slash.rotation = vec.angle()+Math.PI/2;
+
+                    let destoryCall = this.scene.time.delayedCall(500, () => {
+                        this.isSLASHING = false;
+                    });
+
+                    let blocked = false;
+                    this.scene.physics.add.overlap(this.scene.players, slash, (player, sl) => {
+                        if (player != this && !blocked) {
+                            blocked = true;
+                            console.log("Get blocked!");
+                            let vec = player.body.velocity;
+                            player.body.velocity = new Phaser.Math.Vector2(-0.5 * vec.x, -0.5 * vec.y);
+                            destoryCall.elapsed = destoryCall.delay;
+                        }
+                        
+                    });
+                    
+                    accelx = 0; accely = 0;
+                    
+                }                
+            }
+        }
+        
     
             
         }

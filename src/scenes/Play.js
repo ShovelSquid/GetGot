@@ -32,7 +32,7 @@ class Play extends Phaser.Scene {
             startFrame: 0,
             endFrame: 1
         });
-        this.load.spritesheet('slash', './assets/slash.png', {
+        this.load.spritesheet('slash', './assets/Slash-Sheet.png', {
             frameWidth: 100,
             frameHeight: 100,
             startFrame: 0,
@@ -127,8 +127,8 @@ class Play extends Phaser.Scene {
         this.anims.create({
             key: 'player_slash',
             frames: this.anims.generateFrameNumbers('slash', {start: 0, end: 2}),
-            frameRate: 24,
-            repeat: -1
+            frameRate: 12,
+            repeat: 0
         });
 
         const KeyCodes = Phaser.Input.Keyboard.KeyCodes;
