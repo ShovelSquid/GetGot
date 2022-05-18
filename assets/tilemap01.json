@@ -112,61 +112,61 @@
          "tiles":[
                 {
                  "id":0,
-                 "image":"..\/..\/..\/My Art\/GetGotAssets\/Wall-1.png",
+                 "image":"./Wall-1.png",
                  "imageheight":100,
                  "imagewidth":100
                 }, 
                 {
                  "id":1,
-                 "image":"..\/..\/..\/My Art\/GetGotAssets\/Wall-2.png",
+                 "image":"./Wall-2.png",
                  "imageheight":100,
                  "imagewidth":100
                 }, 
                 {
                  "id":2,
-                 "image":"..\/..\/..\/My Art\/GetGotAssets\/Wall-3.png",
+                 "image":"./Wall-3.png",
                  "imageheight":100,
                  "imagewidth":100
                 }, 
                 {
                  "id":3,
-                 "image":"..\/..\/..\/My Art\/GetGotAssets\/Wall-4.png",
+                 "image":"./Wall-4.png",
                  "imageheight":100,
                  "imagewidth":100
                 }, 
                 {
                  "id":4,
-                 "image":"..\/..\/..\/My Art\/GetGotAssets\/Wall-5.png",
+                 "image":"./Wall-5.png",
                  "imageheight":100,
                  "imagewidth":100
                 }, 
                 {
                  "id":5,
-                 "image":"..\/..\/..\/My Art\/GetGotAssets\/Wall-Hurt-1.png",
+                 "image":"./Wall-Hurt-1.png",
                  "imageheight":100,
                  "imagewidth":100
                 }, 
                 {
                  "id":6,
-                 "image":"..\/..\/..\/My Art\/GetGotAssets\/Wall-Break-1.png",
+                 "image":"./Wall-Break-1.png",
                  "imageheight":100,
                  "imagewidth":100
                 }, 
                 {
                  "id":7,
-                 "image":"..\/..\/..\/My Art\/GetGotAssets\/Wall-Break-2.png",
+                 "image":"./Wall-Break-2.png",
                  "imageheight":100,
                  "imagewidth":100
                 }, 
                 {
                  "id":8,
-                 "image":"..\/..\/..\/My Art\/GetGotAssets\/Wall-Break-3.png",
+                 "image":"./Wall-Break-3.png",
                  "imageheight":100,
                  "imagewidth":100
                 }, 
                 {
                  "id":9,
-                 "image":"..\/..\/..\/My Art\/GetGotAssets\/Wall-Break-4.png",
+                 "image":"./Wall-Break-4.png",
                  "imageheight":100,
                  "imagewidth":100
                 }],
