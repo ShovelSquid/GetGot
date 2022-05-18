@@ -55,9 +55,7 @@ class Play extends Phaser.Scene {
         this.hitwall = this.sound.add('hitwall');
         this.schmack = this.sound.add('schmack');
 
-        const map = this.add.tilemap('wall_map');
-
-        const tileset = map.addTilesetImage('walls', 'wall');
+        
 
         // RED Player Animations
         this.anims.create({
@@ -189,7 +187,10 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, game.config.height - borderWidth, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
         this.add.rectangle(game.config.width - borderWidth, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0,0);
     
-        
+        const map = this.add.tilemap('wall_map');
+
+        const tileset = map.addTilesetImage('Wall-Sheet', 'wall');
+        const worldLayer = map.createLayer("Tile Layer 1", tileset, 0, 0);
     }
 
     update(time, delta) {

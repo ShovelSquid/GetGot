@@ -96,80 +96,16 @@
  "tileheight":100,
  "tilesets":[
         {
-         "columns":0,
+         "columns":10,
          "firstgid":1,
-         "grid":
-            {
-             "height":1,
-             "orientation":"orthogonal",
-             "width":1
-            },
+         "image":"Wall-Sheet.png",
+         "imageheight":100,
+         "imagewidth":1000,
          "margin":0,
-         "name":"Wall_Tileset",
+         "name":"Wall-Sheet",
          "spacing":0,
          "tilecount":10,
          "tileheight":100,
-         "tiles":[
-                {
-                 "id":0,
-                 "image":"./Wall-1.png",
-                 "imageheight":100,
-                 "imagewidth":100
-                }, 
-                {
-                 "id":1,
-                 "image":"./Wall-2.png",
-                 "imageheight":100,
-                 "imagewidth":100
-                }, 
-                {
-                 "id":2,
-                 "image":"./Wall-3.png",
-                 "imageheight":100,
-                 "imagewidth":100
-                }, 
-                {
-                 "id":3,
-                 "image":"./Wall-4.png",
-                 "imageheight":100,
-                 "imagewidth":100
-                }, 
-                {
-                 "id":4,
-                 "image":"./Wall-5.png",
-                 "imageheight":100,
-                 "imagewidth":100
-                }, 
-                {
-                 "id":5,
-                 "image":"./Wall-Hurt-1.png",
-                 "imageheight":100,
-                 "imagewidth":100
-                }, 
-                {
-                 "id":6,
-                 "image":"./Wall-Break-1.png",
-                 "imageheight":100,
-                 "imagewidth":100
-                }, 
-                {
-                 "id":7,
-                 "image":"./Wall-Break-2.png",
-                 "imageheight":100,
-                 "imagewidth":100
-                }, 
-                {
-                 "id":8,
-                 "image":"./Wall-Break-3.png",
-                 "imageheight":100,
-                 "imagewidth":100
-                }, 
-                {
-                 "id":9,
-                 "image":"./Wall-Break-4.png",
-                 "imageheight":100,
-                 "imagewidth":100
-                }],
          "tilewidth":100
         }],
  "tilewidth":100,
