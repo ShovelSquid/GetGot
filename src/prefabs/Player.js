@@ -53,6 +53,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             frame: frameREF,
             on: false
         });
+        this.bloodDrag = 10000;
+
         this.walkPoofVFXEffect = this.scene.poofVFXManager.createEmitter({
             follow: this,
             followOffset: {
@@ -90,7 +92,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         this.bloodVFXSplurtEffect.forEachAlive((part) => {
             newBlood = true;
-
+            
+            part.maxVelocityX -= this.bloodDrag * delta;
+            part.maxVelocityY -= this.bloodDrag * delta;
             this.scene.ctx.fillRect(part.x, part.y, 10, 10);
         });
         if (newBlood) {
