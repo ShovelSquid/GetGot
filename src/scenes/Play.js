@@ -35,6 +35,7 @@ class Play extends Phaser.Scene {
         this.load.image('frog', './assets/FROG-200.png');
         this.load.image('background', './assets/background.png');
         this.load.image('poof', './assets/poof.png');
+        this.load.image('slash', './assets/slash.png');
     }
 
     create() {
@@ -111,18 +112,24 @@ class Play extends Phaser.Scene {
         this.bloodVFXManager = this.add.particles('splurt');
         this.poofVFXManager = this.add.particles('poof');
 
+        this.players = this.add.group();
+        
         this.player1 = new Player(this, 100, 200, 'REDplayer', 0, [keyW, keyS, keyA, keyD, keyF, keyG]);
         this.player2 = new Player(this, 300, 200, 'BLUEplayer', 0, [keyUp, keyDown, keyLeft, keyRight, keyComma, keyPeriod]);
-        this.physics.add.collider(this.player1, this.player2, () => {
-            if (this.player1.isLAUNCHING || this.player2.isLAUNCHING) {
-                if (this.player1.isLAUNCHING) {
-                    this.player2.explode();
-                }
-                if (this.player2.isLAUNCHING) {
-                    this.player1.explode();
-                }
+        
+        this.players.add(this.player1);
+        this.players.add(this.player2);
+
+        this.physics.add.collider(this.players, this.players, () => {
+            if (this.player1.isLAUNCHING) {
+                this.player2.explode();
+            }
+            if (this.player2.isLAUNCHING) {
+                this.player1.explode();
             }
         });
+
+        
 
         const borderWidth = 10;
         this.add.rectangle(0, 0, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);

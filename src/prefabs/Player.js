@@ -42,6 +42,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isCHARGING = false;
         this.isLAUNCHING = false;
         this.isEXPLODING = false;
+        this.isSLASHING = false;
         // particles
         this.bloodVFXSplurtEffect = this.scene.bloodVFXManager.createEmitter({
             follow: this,
@@ -89,30 +90,67 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setCollideWorldBounds(true, 0, 0);
             this.isLAUNCHING = false;
 
-            if (this.kUp.isDown) {
-                accely -= this.ACCELERATION;
-                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                    this.anims.play(this.color+'player_triangle_run');
+            if (!this.isSLASHING) {
+                if (this.kUp.isDown) {
+                    accely -= this.ACCELERATION;
+                    if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
+                        this.anims.play(this.color+'player_triangle_run');
+                    }
+                }
+                if (this.kDown.isDown) {
+                    accely += this.ACCELERATION;
+                    if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
+                        this.anims.play(this.color+'player_triangle_run');
+                    }
+                }
+                if (this.kLeft.isDown) {
+                    accelx -= this.ACCELERATION;
+                    if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
+                        this.anims.play(this.color+'player_triangle_run');
+                    }
+                }
+                if (this.kRight.isDown) {
+                    accelx += this.ACCELERATION;
+                    if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
+                        this.anims.play(this.color+'player_triangle_run');
+                    }
+                }
+
+                if (Phaser.Input.Keyboard.JustDown(this.kSlash)) {
+                    if (accelx != 0 || accely != 0) {
+                        this.isSLASHING = true;
+                        let vec = new Phaser.Math.Vector2(accelx, accely).normalize();
+                        const factor = 110;
+                        vec.x *= factor;
+                        vec.y *= factor;
+                        let slash = this.scene.add.sprite(this.x + vec.x, 
+                                                          this.y + vec.y, 'slash');
+                        this.scene.physics.add.existing(slash);
+                        slash.body.immovable = true;
+
+                        let blocked = false;
+                        this.scene.physics.add.overlap(this.scene.players, slash, (player, sl) => {
+                            if (player != this && !blocked) {
+                                blocked = true;
+                                console.log("Get blocked!");
+                                let vec = player.body.velocity;
+                                player.body.velocity = new Phaser.Math.Vector2(-vec.x, -vec.y);
+                            }
+                            
+                        });
+
+                        slash.rotation = vec.angle()+Math.PI/2; //0.5*Math.PI;
+                        //  console.log(this.x + vec.x , this.y + vec.y);
+                        
+                        accelx = 0; accely = 0;
+                        this.scene.time.delayedCall(500, () => {
+                            slash.destroy();
+                            this.isSLASHING = false;
+                        });
+                    }                
                 }
             }
-            if (this.kDown.isDown) {
-                accely += this.ACCELERATION;
-                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                    this.anims.play(this.color+'player_triangle_run');
-                }
-            }
-            if (this.kLeft.isDown) {
-                accelx -= this.ACCELERATION;
-                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                    this.anims.play(this.color+'player_triangle_run');
-                }
-            }
-            if (this.kRight.isDown) {
-                accelx += this.ACCELERATION;
-                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                    this.anims.play(this.color+'player_triangle_run');
-                }
-            }
+            
     
             this.setAcceleration(accelx, accely);   
         }
