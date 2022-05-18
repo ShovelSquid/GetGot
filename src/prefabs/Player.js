@@ -106,12 +106,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
             this.charge -= delta;
         } else {
-            this.setDrag(this.DRAG, this.DRAG);
-            this.setMaxVelocity(this.SPEED, this.SPEED);
+            
+            
             this.setCollideWorldBounds(true, 0, 0);
             this.isLAUNCHING = false;
 
             if (!this.isSLASHING) {
+                this.setDrag(this.DRAG, this.DRAG);
+                this.setMaxVelocity(this.SPEED, this.SPEED);
+
                 if (this.kUp.isDown) {
                     accely -= this.ACCELERATION;
                     if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
@@ -140,6 +143,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 if (Phaser.Input.Keyboard.JustDown(this.kSlash)) {
                     if (accelx != 0 || accely != 0) {
                         this.isSLASHING = true;
+                        this.setDrag(3 * this.DRAG, 3 * this.DRAG);
                         let vec = new Phaser.Math.Vector2(accelx, accely).normalize();
                         const factor = 110;
                         vec.x *= factor;
@@ -148,6 +152,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                                                           this.y + vec.y, 'slash');
                         this.scene.physics.add.existing(slash);
                         slash.body.immovable = true;
+                        slash.rotation = vec.angle()+Math.PI/2;
+
+                        let destoryCall = this.scene.time.delayedCall(500, () => {
+                            slash.destroy();
+                            this.isSLASHING = false;
+                        });
 
                         let blocked = false;
                         this.scene.physics.add.overlap(this.scene.players, slash, (player, sl) => {
@@ -156,18 +166,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                                 console.log("Get blocked!");
                                 let vec = player.body.velocity;
                                 player.body.velocity = new Phaser.Math.Vector2(-vec.x, -vec.y);
+                                destoryCall.elapsed = destoryCall.delay;
                             }
                             
                         });
-
-                        slash.rotation = vec.angle()+Math.PI/2; //0.5*Math.PI;
-                        //  console.log(this.x + vec.x , this.y + vec.y);
                         
                         accelx = 0; accely = 0;
-                        this.scene.time.delayedCall(500, () => {
-                            slash.destroy();
-                            this.isSLASHING = false;
-                        });
+                        
                     }                
                 }
             }
