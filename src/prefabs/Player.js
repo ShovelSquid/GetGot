@@ -178,7 +178,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
             
     
-            this.setAcceleration(accelx, accely);   
+            
         }
 
         if (!this.isLAUNCHING && this.kCharge.isDown && this.charge < 1.5) {
@@ -190,16 +190,24 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
         if (Phaser.Input.Keyboard.JustUp(this.kCharge) || this.charge >= 1.5) {
-            const factor = 8 * this.charge;
             this.isCHARGING = false;
-            this.isLAUNCHING = true;
-            this.setMaxVelocity(factor * this.SPEED);
+            
+            const factor = 8 * this.charge;
             let velo = this.body.velocity.normalize();
             velo.x *= factor * this.SPEED;
             velo.y *= factor * this.SPEED;
-            this.setVelocity(velo.x, velo.y);
-            // there's a thingy when you launch it gets crazy
-            this.setCollideWorldBounds(true, 0.5, 0.5);
+
+            if (accelx != 0 || accely != 0) {
+                this.isLAUNCHING = true;
+                this.setMaxVelocity(factor * this.SPEED);
+                
+                this.setVelocity(velo.x, velo.y);
+                // there's a thingy when you launch it gets crazy
+                this.setCollideWorldBounds(true, 0.5, 0.5);
+            } else {
+                this.charge = 0;
+            }
+            
         }
         
         if (accelx == 0 && accely == 0) {

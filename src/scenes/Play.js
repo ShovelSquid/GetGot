@@ -143,6 +143,7 @@ class Play extends Phaser.Scene {
         this.backg.setSize(game.config.width, game.config.height);
         const backg = this.add.image(0, 0, 'backg').setOrigin(0, 0);
 
+        // Keys
         keyUp = this.input.keyboard.addKey(KeyCodes.UP);
         keyDown = this.input.keyboard.addKey(KeyCodes.DOWN);
         keyLeft = this.input.keyboard.addKey(KeyCodes.LEFT);
@@ -172,10 +173,10 @@ class Play extends Phaser.Scene {
         this.players.add(this.player2);
 
         this.physics.add.collider(this.players, this.players, () => {
-            if (this.player1.isLAUNCHING) {
+            if (this.player1.isLAUNCHING && this.player1.body.velocity.length() >= 2*this.player1.SPEED) {
                 this.player2.explode();
             }
-            if (this.player2.isLAUNCHING) {
+            if (this.player2.isLAUNCHING && this.player2.body.velocity.length() >= 2*this.player2.SPEED) {
                 this.player1.explode();
             }
         });
