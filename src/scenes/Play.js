@@ -92,6 +92,14 @@ class Play extends Phaser.Scene {
 
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
         
+        // Splatoon
+        const bg = document.createElement('canvas');
+        this.ctx = bg.getContext('2d');
+
+        this.backg = this.textures.addCanvas('backg', bg);
+        this.backg.setSize(game.config.width, game.config.height);
+        const backg = this.add.image(0, 0, 'backg').setOrigin(0, 0);
+
         keyUp = this.input.keyboard.addKey(KeyCodes.UP);
         keyDown = this.input.keyboard.addKey(KeyCodes.DOWN);
         keyLeft = this.input.keyboard.addKey(KeyCodes.LEFT);
@@ -136,6 +144,8 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0, 0);
         this.add.rectangle(0, game.config.height - borderWidth, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
         this.add.rectangle(game.config.width - borderWidth, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0,0);
+    
+        
     }
 
     update(time, delta) {

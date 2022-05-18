@@ -51,7 +51,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             lifespan: {min: 700, max: 900},
             scale: {start: 1.0, end: 0.1},
             frame: frameREF,
-            on: false,
+            on: false
         });
         this.walkPoofVFXEffect = this.scene.poofVFXManager.createEmitter({
             follow: this,
@@ -73,12 +73,29 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.anims.currentAnim.key == this.color+'player_triangle_run') {
                 this.walkPoofVFXEffect.explode();
             }
-        })
+        });
     }
 
     update(delta) {
         let accelx = 0;
         let accely = 0;
+
+        let newBlood = false;
+        if (this.color === 'RED') {
+            this.scene.ctx.fillStyle = '#fe0144';
+        } else if (this.color === 'BLUE') {
+            this.scene.ctx.fillStyle = '#01febb';
+        } else {
+            this.scene.ctx.fillStyle = 'black';
+        }
+        this.bloodVFXSplurtEffect.forEachAlive((part) => {
+            newBlood = true;
+
+            this.scene.ctx.fillRect(part.x, part.y, 10, 10);
+        });
+        if (newBlood) {
+            this.scene.backg.refresh();
+        }
        
         if (this.charge > 0 && !this.isCHARGING) {
             this.setDrag(0, 0);
