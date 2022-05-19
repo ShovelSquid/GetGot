@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="8" height="6" tilewidth="100" tileheight="100" infinite="0" nextlayerid="3" nextobjectid="1">
+ <editorsettings>
+  <export target="tilemap01.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" name="Wall-Sheet" tilewidth="100" tileheight="100" tilecount="10" columns="10">
+  <image source="Wall-Sheet.png" width="1000" height="100"/>
+  <tile id="0">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer id="2" name="Tile Layer 2" width="8" height="6">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,6,6,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="1" name="Tile Layer 1" width="8" height="6">
+  <properties>
+   <property name="collision" type="bool" value="true"/>
+   <property name="destructable" type="bool" value="true"/>
+   <property name="health" type="int" value="10"/>
+  </properties>
+  <data encoding="csv">
+1,1,0,0,0,0,1,1,
+1,0,0,0,0,0,0,1,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+1,0,0,0,0,0,0,1,
+1,1,0,0,0,0,1,1
+</data>
+ </layer>
+</map>
