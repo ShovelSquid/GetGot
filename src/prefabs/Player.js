@@ -38,11 +38,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.kCharge = keys[5];
 
         this.charge = 0;
+        this.stunTime = 1000
+        ;   // in milliseconds
         // booleans
         this.isCHARGING = false;
         this.isLAUNCHING = false;
         this.isEXPLODING = false;
         this.isSLASHING = false;
+        this.STUNNED = false;
         // particles
         this.bloodVFXSplurtEffect = this.scene.bloodVFXManager.createEmitter({
             follow: this,
@@ -111,7 +114,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setCollideWorldBounds(true, 0, 0);
         this.isLAUNCHING = false;
 
-        if (!this.isSLASHING) {
+        if (!this.isSLASHING && !this.STUNNED) {
             this.setDrag(this.DRAG, this.DRAG);
             this.setMaxVelocity(this.SPEED, this.SPEED);
 
@@ -166,8 +169,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         if (player != this && !blocked) {
                             blocked = true;
                             console.log("Get blocked!");
-                            let vec = player.body.velocity;
-                            player.body.velocity = new Phaser.Math.Vector2(-0.5 * vec.x, -0.5 * vec.y);
+                            let vech = player.body.velocity;
+                            player.body.velocity = new Phaser.Math.Vector2(100*vec.x, 100*vec.y);
+                            player.STUNNED = true;
+                            player.setTintFill(0xffffff);
+                            player.body.enable = false;
+                            this.scene.cameras.main.shake(250, 0.01)
+                            this.stopcall = this.scene.time.delayedCall(250, () => {
+                                player.clearTint();
+                                player.body.enable = true;
+                            })
+                            this.stuncall = this.scene.time.delayedCall(this.stunTime, () => {
+                                player.clearTint();
+                                player.STUNNED = false;
+                            })
                             destoryCall.elapsed = destoryCall.delay;
                         }
                         
