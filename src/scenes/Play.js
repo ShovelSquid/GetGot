@@ -134,12 +134,12 @@ class Play extends Phaser.Scene {
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
         
         // Splatoon
-        const bg = document.createElement('canvas');
-        this.ctx = bg.getContext('2d');
+        this.canvasbgelement = document.createElement('canvas');
+        this.bgctx = this.canvasbgelement.getContext('2d');
 
-        this.backg = this.textures.addCanvas('backg', bg);
-        this.backg.setSize(game.config.width, game.config.height);
-        const backg = this.add.image(0, 0, 'backg').setOrigin(0, 0);
+        this.canvasbg = this.textures.addCanvas('splatback', this.canvasbgelement);
+        this.canvasbg.setSize(game.config.width, game.config.height);
+        this.splatback = this.add.image(0, 0, 'splatback').setOrigin(0, 0);
 
         // Keys
         keyUp = this.input.keyboard.addKey(KeyCodes.UP);

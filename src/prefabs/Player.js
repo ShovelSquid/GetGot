@@ -87,21 +87,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         let newBlood = false;
         if (this.color === 'RED') {
-            this.scene.ctx.fillStyle = '#fe0144';
+            this.scene.bgctx.fillStyle = '#fe0144';
         } else if (this.color === 'BLUE') {
-            this.scene.ctx.fillStyle = '#01febb';
+            this.scene.bgctx.fillStyle = '#01febb';
         } else {
-            this.scene.ctx.fillStyle = 'black';
+            this.scene.bgctx.fillStyle = 'black';
         }
         this.bloodVFXSplurtEffect.forEachAlive((part) => {
             newBlood = true;
             
             part.maxVelocityX /= this.bloodDrag * delta;
             part.maxVelocityY /= this.bloodDrag * delta;
-            this.scene.ctx.fillRect(part.x, part.y, 10, 10);
+            this.scene.bgctx.fillRect(part.x, part.y, 10, 10);
         });
         if (newBlood) {
-            this.scene.backg.refresh();
+            this.scene.canvasbg.refresh();
         }
        
         if (this.charge > 0 && !this.isCHARGING) {
