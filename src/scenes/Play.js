@@ -51,11 +51,10 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.gameOver = false;
         this.bloodexplode = this.sound.add('bloodexplode');
         this.hitwall = this.sound.add('hitwall');
         this.schmack = this.sound.add('schmack');
-
-        
 
         // RED Player Animations
         this.anims.create({
@@ -158,6 +157,8 @@ class Play extends Phaser.Scene {
         // ,, . = slash, charge
         keyComma = this.input.keyboard.addKey(KeyCodes.COMMA);
         keyPeriod = this.input.keyboard.addKey(KeyCodes.PERIOD);
+        // Enter for Restart
+        this.keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
         this.bloodVFXManager = this.add.particles('splurt');
         this.poofVFXManager = this.add.particles('poof');
@@ -172,14 +173,42 @@ class Play extends Phaser.Scene {
 
         this.physics.add.collider(this.players, this.players, () => {
             if (this.player1.isLAUNCHING && this.player1.body.velocity.length() >= 2*this.player1.SPEED) {
-                this.player2.explode();
+                this.player2.explode(this.player1);
+                console.log("Player1 score: ", this.player1.score);
             }
             if (this.player2.isLAUNCHING && this.player2.body.velocity.length() >= 2*this.player2.SPEED) {
-                this.player1.explode();
+                this.player1.explode(this.player2);
+                console.log("Player2 score: ", this.player2.score);
+
             }
         });
 
-        
+        let textConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#000000',
+            color: '#FFFFAA',
+            align: 'right',
+            padding: {
+                top: 5, 
+                bottom: 5,
+            },
+            fixedWidth: 0
+        }
+
+        this.endGameTimer = this.time.delayedCall(10000, () => {
+            this.physics.pause();
+            this.add.text(game.config.width/2, game.config.height*0.4, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
+            this.add.text(game.config.width*0.4, game.config.height*0.5, 
+                'Player 1 Score:' + this.player1.score, textConfig).setOrigin(1, 0.5);
+            this.add.text(game.config.width*0.6, game.config.height*0.5, 
+                'Player 2 Score:' + this.player2.score, textConfig).setOrigin(0, 0.5);
+            this.add.text(game.config.width*0.5, game.config.height*0.6, 
+                'Press ENTER to restart!', textConfig).setOrigin(0.5, 0.5);
+
+            this.gameOver = true;
+        });
+
 
         const borderWidth = 10;
         this.add.rectangle(0, 0, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
@@ -212,5 +241,10 @@ class Play extends Phaser.Scene {
 
         this.player1.update(delta);
         this.player2.update(delta);
+
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.keyEnter)) {
+            console.log("_RESS");
+            this.scene.start('menuScene');
+        }
     }
 }

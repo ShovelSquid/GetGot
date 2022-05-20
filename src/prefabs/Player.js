@@ -15,6 +15,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.speedx = 0;
         this.speedy = 0;
 
+        this.score = 0;
+
         // Visuals
         this.setScale(SCALE);
         this.color = texture.replace('player', '');
@@ -240,13 +242,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setAcceleration(accelx, accely);
     }
 
-    explode() {
+    explode(playerExploder) {
         if (this.isLAUNCHING) {
             // not die
         }
         else if (!this.isEXPLODING) {
             // die
             console.log("EPXLEOKDOEKFOJOSJIGJ");
+            playerExploder.score += 1;
 
             this.scene.cameras.main.shake(450, 0.022);
             this.scene.schmack.play();
