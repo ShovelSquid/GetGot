@@ -164,7 +164,7 @@ class Play extends Phaser.Scene {
 
         this.players = this.add.group();
         
-        this.player1 = new Player(this, 100, 200, 'REDplayer', 0, [keyW, keyS, keyA, keyD, keyF, keyG]);
+        this.player1 = new Player(this, 150, 200, 'REDplayer', 0, [keyW, keyS, keyA, keyD, keyF, keyG]);
         this.player2 = new Player(this, 300, 200, 'BLUEplayer', 0, [keyUp, keyDown, keyLeft, keyRight, keyComma, keyPeriod]);
         
         this.players.add(this.player1);
@@ -196,9 +196,32 @@ class Play extends Phaser.Scene {
         wallLayer.setCollisionByProperty({
             collides: true,
         });
+        this.walls = this.add.group();
+        // wallLayer.forEachTile((tile) => {
+        //     if (tile.canCollide) {
+        //         this.walls.add(tile);
+        //     }
+        // });
 
-        this.physics.add.collider(this.players, wallLayer, null, null, this, () => {
-            console.log("TOUCH ME");
+        // this.physics.add.collider(this.players, wallLayer, null, null, this, () => {
+        //     console.log("TOUCH ME");
+        // });
+        this.physics.add.overlap(this.players, wallLayer, (player, wall) => {
+            if (wall.canCollide) {
+                // player.x = game.config.width / 2;
+                // player.y = game.config.height / 2;
+                // same as world collide in Player.js
+                player.body.velocity = player.body.velocity.negate().scale(0.5);
+                // Note: this should use the while loop instead of the one move
+                // However the while loop currently freezes the game and the
+                // Hardcoded offset seems to work well enough
+                // TODO
+                //while (player.body.blocked && !player.body.onWorldBounds) {
+                    player.body.x += 0.05 * player.body.velocity.x;
+                    player.body.y += 0.05 * player.body.velocity.y;
+                //}
+            }
+            
         });
         // there's just no collision for a reason, one which I refuse to believe
         // this.physics.add.overlap(this.player1, supercoollayer, () => {
