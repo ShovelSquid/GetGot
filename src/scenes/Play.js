@@ -1,3 +1,8 @@
+let loaded = false;
+let canvasbgelement;
+let bgctx;
+let canvasbg;
+
 class Play extends Phaser.Scene {
     constructor() {
         super("playScene");
@@ -133,11 +138,21 @@ class Play extends Phaser.Scene {
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
         
         // Splatoon
-        this.canvasbgelement = document.createElement('canvas');
-        this.bgctx = this.canvasbgelement.getContext('2d');
+        if (!loaded) {
+            canvasbgelement = document.createElement('canvas');
+            bgctx = canvasbgelement.getContext('2d');
+            canvasbg = this.textures.addCanvas('splatback', canvasbgelement);
+            canvasbg.setSize(game.config.width, game.config.height);
+            loaded = true;
+        }
 
-        this.canvasbg = this.textures.addCanvas('splatback', this.canvasbgelement);
-        this.canvasbg.setSize(game.config.width, game.config.height);
+        this.canvasbgelement = canvasbgelement;
+        this.bgctx = bgctx;
+        this.canvasbg = canvasbg;
+        this.bgctx.clearRect(0, 0, canvasbgelement.width, canvasbgelement.height);
+        this.canvasbg.refresh();
+        
+        
         this.splatback = this.add.image(0, 0, 'splatback').setOrigin(0, 0);
 
         // Keys
