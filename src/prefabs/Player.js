@@ -107,8 +107,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
        
         if (this.charge > 0 && !this.isCHARGING) {
+            //this.scene.charging.play();
             this.setDrag(0, 0);
-
             this.charge -= delta;
         } else {
             
@@ -124,24 +124,28 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 accely -= this.ACCELERATION;
                 if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
                     this.anims.play(this.color+'player_triangle_run');
+                    //this.scene.walking.play();
                 }
             }
             if (this.kDown.isDown) {
                 accely += this.ACCELERATION;
                 if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
                     this.anims.play(this.color+'player_triangle_run');
+                    //this.scene.walking.play();
                 }
             }
             if (this.kLeft.isDown) {
                 accelx -= this.ACCELERATION;
                 if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
                     this.anims.play(this.color+'player_triangle_run');
+                    //this.scene.walking.play();
                 }
             }
             if (this.kRight.isDown) {
                 accelx += this.ACCELERATION;
                 if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
                     this.anims.play(this.color+'player_triangle_run');
+                    //this.scene.walking.play();
                 }
             }
 
