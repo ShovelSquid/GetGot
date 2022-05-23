@@ -21,7 +21,7 @@ class Menu extends Phaser.Scene {
             this.update(++clickCount);
             this.enterButtonHoverState();
             if (clickCount == 1) {
-                this.scene.start('playScene');
+                this.scene.start('tutorialScene');
             }
         });
     
