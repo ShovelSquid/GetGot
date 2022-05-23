@@ -9,6 +9,9 @@
    <properties>
     <property name="collides" type="bool" value="true"/>
    </properties>
+   <objectgroup draworder="index" id="4">
+    <object id="3" x="26.9139" y="28.11" width="44.059" height="42.4641"/>
+   </objectgroup>
   </tile>
   <tile id="1">
    <properties>
@@ -54,7 +57,7 @@
   </properties>
   <data encoding="csv">
 1,1,0,0,0,0,1,1,
-1,0,0,0,0,0,0,1,
+1,0,0,1,1,0,0,1,
 0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,
 1,0,0,0,0,0,0,1,
