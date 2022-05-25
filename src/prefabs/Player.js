@@ -48,6 +48,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isEXPLODING = false;
         this.isSLASHING = false;
         this.STUNNED = false;
+
+        // State Machine
+        this.IDLE = true;
+        this.MOVING = false;
+        this.CHARGING = false;
+        this.LAUNCHING = false;
+        this.SLASHING = false;
+        this.STUNNED = false;
+        this.DEAD = false;
+        
         // particles
         this.bloodVFXSplurtEffect = this.scene.bloodVFXManager.createEmitter({
             follow: this,

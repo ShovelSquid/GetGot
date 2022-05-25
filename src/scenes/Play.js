@@ -9,52 +9,55 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.audio('bloodexplode', './assets/bloodexplode.wav');
-        this.load.audio('hitwall', './assets/hitwall.wav');
-        this.load.audio('schmack', './assets/schmack.wav');
-        this.load.audio('walking', './assets/walking.wav');
-        this.load.audio('charging', './assets/charging.wav');
+        this.load.path = './assets/';
 
-        this.load.spritesheet('REDplayer', './assets/Player_Triangle-Sheet.png', {
+        this.load.audio('bloodexplode', 'bloodexplode.wav');
+        this.load.audio('hitwall', 'hitwall.wav');
+        this.load.audio('schmack', 'schmack.wav');
+        this.load.audio('walking', 'walking.wav');
+        this.load.audio('charging', 'charging.wav');
+
+        this.load.spritesheet('REDplayer', 'Player_Triangle-Sheet.png', {
             frameWidth: 100,
             frameHeight: 100,
             startFrame: 0,
             endFrame: 11,
         });
-        this.load.spritesheet('BLUEplayer', './assets/Player-Triangle-Sheet-Blue.png', {
+        this.load.spritesheet('BLUEplayer', 'Player-Triangle-Sheet-Blue.png', {
             frameWidth: 100,
             frameHeight: 100,
             startFrame: 0,
             endFrame: 11
         });
-        this.load.spritesheet('explosion', './assets/explosionado-Sheet.png', {
+        this.load.spritesheet('explosion', 'explosionado-Sheet.png', {
             frameWidth: 32,
             frameHeight: 32,
             startFrame: 0,
             endFrame: 4
         });
-        this.load.spritesheet('splurt', './assets/splurt-sheet.png', {
+        this.load.spritesheet('splurt', 'splurt-sheet.png', {
             frameWidth: 100,
             frameHeight: 100,
             startFrame: 0,
             endFrame: 1
         });
-        this.load.spritesheet('slash', './assets/Slash-Sheet.png', {
+        this.load.spritesheet('slash', 'Slash-Sheet.png', {
             frameWidth: 100,
             frameHeight: 100,
             startFrame: 0,
             endFrame: 2
         });
-        this.load.spritesheet('wall', './assets/Wall-Sheet.png', {      // Tiled tilesheet
+        this.load.spritesheet('wall', 'Wall-Sheet.png', {      // Tiled tilesheet
             frameWidth: 100,
             frameHeight: 100,
             startFrame: 0,
             endFrame: 9,
         });
-        this.load.tilemapTiledJSON('wall_map', './assets/tilemap01.json');       // Adds Tiled tilemap 
-        this.load.image('frog', './assets/FROG-200.png');
-        this.load.image('background', './assets/background.png');
-        this.load.image('poof', './assets/poof.png');
+        this.load.tilemapTiledJSON('wall_map', 'tilemap01.json');       // Adds Tiled tilemap 
+        this.load.image('frog', 'FROG-200.png');
+        this.load.image('background', 'background.png');
+        this.load.image('poof', 'poof.png');
+        this.load.image('blood', 'BLUD.png');
     }
 
     create() {
