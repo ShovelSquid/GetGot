@@ -9,12 +9,14 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
+        // Sounds
         this.load.audio('bloodexplode', './assets/bloodexplode.wav');
         this.load.audio('hitwall', './assets/hitwall.wav');
         this.load.audio('schmack', './assets/schmack.wav');
         this.load.audio('walking', './assets/walking.wav');
         this.load.audio('charging', './assets/charging.wav');
 
+        // Sprites
         this.load.spritesheet('REDplayer', './assets/Player_Triangle-Sheet.png', {
             frameWidth: 100,
             frameHeight: 100,
@@ -59,6 +61,8 @@ class Play extends Phaser.Scene {
 
     create() {
         this.gameOver = false;
+        
+        // Set up sounds
         this.bloodexplode = this.sound.add('bloodexplode');
         this.hitwall = this.sound.add('hitwall');
         this.schmack = this.sound.add('schmack');
@@ -105,7 +109,7 @@ class Play extends Phaser.Scene {
             repeat: -1
         });
 
-        // Wall anims
+        // Wall anims/states
         this.anims.create({
             key: 'wall_idle',
             frames: this.anims.generateFrameNumbers('wall', {start: 0, end: 4}),
@@ -138,12 +142,15 @@ class Play extends Phaser.Scene {
             repeat: 0
         });
 
-        const KeyCodes = Phaser.Input.Keyboard.KeyCodes;
+        const KeyCodes = Phaser.Input.Keyboard.KeyCodes; // Less typing
 
+        // Background image
         this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'background').setOrigin(0, 0);
         
         // Splatoon
+        // Interactive, cavas-based background
         if (!loaded) {
+            // Only make a new canvas if this is the first time we are playing
             canvasbgelement = document.createElement('canvas');
             bgctx = canvasbgelement.getContext('2d');
             canvasbg = this.textures.addCanvas('splatback', canvasbgelement);
@@ -156,16 +163,15 @@ class Play extends Phaser.Scene {
         this.canvasbg = canvasbg;
         this.bgctx.clearRect(0, 0, canvasbgelement.width, canvasbgelement.height);
         this.canvasbg.refresh();
-        
-        
         this.splatback = this.add.image(0, 0, 'splatback').setOrigin(0, 0);
 
         // Keys
+        // Movement P1
         keyUp = this.input.keyboard.addKey(KeyCodes.UP);
         keyDown = this.input.keyboard.addKey(KeyCodes.DOWN);
         keyLeft = this.input.keyboard.addKey(KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(KeyCodes.RIGHT);
-
+        // Movement P2
         keyW = this.input.keyboard.addKey(KeyCodes.W);
         keyS = this.input.keyboard.addKey(KeyCodes.S);
         keyA = this.input.keyboard.addKey(KeyCodes.A);
@@ -177,12 +183,14 @@ class Play extends Phaser.Scene {
         // ,, . = slash, charge
         keyComma = this.input.keyboard.addKey(KeyCodes.COMMA);
         keyPeriod = this.input.keyboard.addKey(KeyCodes.PERIOD);
+        
         // Enter for Restart
         this.keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
         this.bloodVFXManager = this.add.particles('splurt');
         this.poofVFXManager = this.add.particles('poof');
 
+        // Add our player characters
         this.players = this.add.group();
         
         this.player1 = new Player(this, 150, 200, 'REDplayer', 0, [keyW, keyS, keyA, keyD, keyF, keyG]);
@@ -193,8 +201,9 @@ class Play extends Phaser.Scene {
 
 
         this.physics.world.setBounds(0, 0, game.config.width, game.config.height);
-        console.log(this.physics.world.bounds);
+        // console.log(this.physics.world.bounds);
 
+        // Explode when launching into each other
         this.physics.add.collider(this.players, this.players, () => {
             if (this.player1.isLAUNCHING && this.player1.body.velocity.length() >= 2*this.player1.SPEED) {
                 this.player2.explode(this.player1, this.player2);
@@ -207,6 +216,7 @@ class Play extends Phaser.Scene {
             }
         });
 
+        // Game timer
         let textConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -219,7 +229,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 0
         }
-
+        // End screen
         this.endGameTimer = this.time.delayedCall(45000, () => {
             this.physics.pause();
             this.add.text(game.config.width/2, game.config.height*0.4, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
@@ -233,13 +243,7 @@ class Play extends Phaser.Scene {
             this.gameOver = true;
         });
 
-
-        // const borderWidth = 10;
-        // this.add.rectangle(0, 0, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
-        // this.add.rectangle(0, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0, 0);
-        // this.add.rectangle(0, game.config.height - borderWidth, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
-        // this.add.rectangle(game.config.width - borderWidth, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0,0);
-    
+        // Map of walls
         const map = this.add.tilemap('wall_map');
 
         const tileset = map.addTilesetImage('Wall-Sheet', 'wall');
@@ -250,12 +254,8 @@ class Play extends Phaser.Scene {
             collides: true,
         });
         this.walls = this.add.group();
-        // wallLayer.forEachTile((tile) => {
-        //     if (tile.canCollide) {
-        //         this.walls.add(tile);
-        //     }
-        // });
 
+        // When a player hits a wall -> bounce off
         this.physics.add.overlap(this.players, wallLayer, (player, wall) => {
             if (wall.canCollide) {
                 let wallx = wall.pixelX + 0.5 * wall.width;
@@ -264,21 +264,25 @@ class Play extends Phaser.Scene {
                 let playerx = player.x;
                 let playery = player.y;
 
+                // Distance from center of wall
                 let distance = new Phaser.Math.Vector2(playerx - wallx, playery - wally);
+
+                // Do the smallest move
+                // The closest one is the greater distance
                 if (abs(distance.x) > abs(distance.y)) {
                     if (distance.x < 0) {
                         player.x -= wall.width + distance.x + 5;
                     } else {
                         player.x += wall.width - distance.x + 5;
                     }
-                    player.body.velocity.x = -0.5 * player.body.velocity.x;
+                    player.body.velocity.x = -0.5 * player.body.velocity.x; // bounce x
                 } else {
                     if (distance.y < 0) {
                         player.y -= wall.height + distance.y + 5;
                     } else {
                         player.y += wall.height - distance.y + 5;
                     }
-                    player.body.velocity.y = -0.5 * player.body.velocity.y;
+                    player.body.velocity.y = -0.5 * player.body.velocity.y; // bounce y
                 }
             }
             

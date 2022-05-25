@@ -11,6 +11,8 @@ class Menu extends Phaser.Scene {
         //this.keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
         this.add.text(10, 10, "Get Got!");
+
+        // Tutorial button
         let clickCount = 0;
         this.clickButton = this.add.text(100, 100, 'Click me 4 tutorial', { fill: '#0f0' })
           .setInteractive({ useHandCursor: true })

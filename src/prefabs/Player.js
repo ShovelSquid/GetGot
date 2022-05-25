@@ -2,6 +2,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame, keys) {
         super(scene, x, y, texture, frame);
 
+        // Add this player to the scene
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
 
@@ -42,12 +43,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.charge = 0;
         this.stunTime = 1000
         ;   // in milliseconds
-        // booleans
+        // states
         this.isCHARGING = false;
         this.isLAUNCHING = false;
         this.isEXPLODING = false;
         this.isSLASHING = false;
         this.STUNNED = false;
+
         // particles
         this.bloodVFXSplurtEffect = this.scene.bloodVFXManager.createEmitter({
             follow: this,
@@ -82,9 +84,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         });
 
+        // Save the direction the player is facing
         this.facingx = 0;
         this.facingy = 0;
 
+        // Think smash percentage
         this.health = 0;
     }
 
@@ -108,6 +112,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.scene.bgctx.fillRect(part.x, part.y, 10, 10);
         });
         if (newBlood) {
+            // only refresh the background if something changed
             this.scene.canvasbg.refresh();
         }
        
@@ -164,9 +169,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
 
             if (Phaser.Input.Keyboard.JustUp(this.kCharge)) {
+                // If the player is currently inputting...
                 if (accelx != 0 || accely != 0) {
                     if (this.charge < 0.2) {
-                        //&& accelx != 0 || accely != 0
                         this.slash(accelx, accely);         // SLASH!
                         // this.isCHARGING = false;
                         // this.setMaxVelocity(this.SPEED, this.SPEED);        
@@ -175,8 +180,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         this.launch(accelx, accely);        // LAUNCH!
                     }
                 } else {
+                    // Use previous direction information
                     if (this.charge < 0.2) {
-                        //&& accelx != 0 || accely != 0
                         console.log(this.facingx, this.facingy);
                         this.slash(this.facingx, this.facingy);         // SLASH!
                         // this.isCHARGING = false;
@@ -186,12 +191,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                         this.launch(this.facingx, this.facingy);        // LAUNCH!
                     }
                 }
-                console.log('Just UP charge button!!');
-                // if (accelx != 0 || accely != 0) {
-                //     this.slash();
-                // }
+                // console.log('Just UP charge button!!');
             }
         }
+
+        // Only launch if sufficient charge
         if (this.charge >= 1.5) {
             this.launch(accelx, accely);
         }
@@ -201,11 +205,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         if (!this.isLAUNCHING && this.kCharge.isDown && this.charge < 1.5) {
-            // if (this.charge >= 0.2) {
-            //     if (!this.isCHARGING) {
-            //         this.isCHARGING = true;
-            //     }
-            // };
             console.log("CURRENT CHARGE: " + this.charge);
             this.setMaxVelocity(this.SPEED / 30);
             this.isCHARGING = true;
@@ -213,23 +212,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.anims.currentAnim.key !== this.color+'player_triangle_charge') {
                 this.anims.play(this.color+'player_triangle_charge');
             };
-        }
-        else {
+        } else {
             this.isCHARGING = false;
             this.charge = 0;
         }
-
-        // if (Phaser.Input.Keyboard.JustUp(this.kCharge) || this.charge >= 1.5) {
-
-        // }
         
         if (accelx == 0 && accely == 0) {
+            // Make sure our animation is correct
+            // TODO doesn't work while launching / slashing
             if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_idle') {
                 this.anims.play(this.color+'player_triangle_idle');
             }
         } 
+
+        // Save facing direction
         if (accelx < 0) {
-            this.setFlipX(1);
+            this.setFlipX(1); // have animation face correct dir
             this.facingx = -1;
         } else if (accelx > 0) {
             this.setFlipX(0);
@@ -256,11 +254,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     slash(accelx, accely) {
         this.isSLASHING = true;
-        this.setDrag(3 * this.DRAG, 3 * this.DRAG);
-        let vec = new Phaser.Math.Vector2(accelx, accely).normalize();
-        const factor = 110;
+        this.setDrag(3 * this.DRAG, 3 * this.DRAG); // slow down player while slashing
+        let vec = new Phaser.Math.Vector2(accelx, accely).normalize(); // facing direction
+        
+        // move out the slash
+        const factor = 110; 
         vec.x *= factor;
         vec.y *= factor;
+        
+        // create slash object
         let slash = this.scene.add.sprite(this.x + vec.x, this.y + vec.y, 'slash');
         slash.anims.play('player_slash');
         slash.on('animationcomplete', () => {
@@ -270,21 +272,25 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         slash.body.immovable = true;
         slash.rotation = vec.angle()+Math.PI/2;
 
+        // remove slash when done
         let destoryCall = this.scene.time.delayedCall(500, () => {
             this.isSLASHING = false;
         });
 
+        // if player launches into slash, bounce them back
         let blocked = false;
         this.scene.physics.add.overlap(this.scene.players, slash, (player, sl) => {
             if (player != this && !blocked) {
                 blocked = true;
-                let vech = player.body.velocity;
+                // Player will move in the direction of the slash
+                // TODO: alter based off player speed
                 player.body.velocity = new Phaser.Math.Vector2(100*vec.x, 100*vec.y);
                 player.STUNNED = true;
-                player.setTintFill(0xffffff);
+                player.setTintFill(0xffffff); // Make player flash white
                 player.body.enable = false;
-                this.scene.cameras.main.shake(250, 0.01)
+                this.scene.cameras.main.shake(250, 0.01); // We love the screen shake
                 this.stopcall = this.scene.time.delayedCall(250, () => {
+                    // Remove the white flash after a bit
                     player.clearTint();
                     player.body.enable = true;
                 })
@@ -297,8 +303,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             
         });
         
+        // stop player movement
         accelx = 0; accely = 0;
     }
+
     launch(accelx, accely) {
         this.isCHARGING = false;        // Set charge boolean to false
         console.log("calling launch function");
@@ -334,13 +342,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             playerExplodee.health += 0.01 * magnitude;
             console.log(playerExplodee.health);
 
-            this.scene.cameras.main.shake(450, 0.022);
+            this.scene.cameras.main.shake(450, 0.022); // we love the screen shake
+            // play sounds
             this.scene.schmack.play();
             this.scene.bloodexplode.play();
+            
             this.isEXPLODING = true;
             this.alpha = 0;
             this.body.enable = false;
             this.scene.physics.pause();
+            
+            // Make explosion
             let boom = this.scene.add.sprite(this.x, this.y, 'explosion').setScale(2);
             boom.anims.play('explode');
             this.bloodVFXSplurtEffect.explode();
@@ -349,6 +361,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.scene.physics.resume();
             })
             this.respawn = this.scene.time.delayedCall(2000, () => {
+                // TODO: move the player to random location
                 this.alpha = 1;
                 this.body.enable = true;
                 // boom.destroy();
