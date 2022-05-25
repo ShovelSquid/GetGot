@@ -191,6 +191,10 @@ class Play extends Phaser.Scene {
         this.players.add(this.player1);
         this.players.add(this.player2);
 
+
+        this.physics.world.setBounds(0, 0, game.config.width, game.config.height);
+        console.log(this.physics.world.bounds);
+
         this.physics.add.collider(this.players, this.players, () => {
             if (this.player1.isLAUNCHING && this.player1.body.velocity.length() >= 2*this.player1.SPEED) {
                 this.player2.explode(this.player1);
@@ -216,7 +220,7 @@ class Play extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.endGameTimer = this.time.delayedCall(10000, () => {
+        this.endGameTimer = this.time.delayedCall(45000, () => {
             this.physics.pause();
             this.add.text(game.config.width/2, game.config.height*0.4, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
             this.add.text(game.config.width*0.4, game.config.height*0.5, 
@@ -240,7 +244,7 @@ class Play extends Phaser.Scene {
 
         const tileset = map.addTilesetImage('Wall-Sheet', 'wall');
         const wallLayer = map.createLayer("Tile Layer 1", tileset, 0, 0);
-        const supercoollayer = map.createLayer("Tile Layer 2", tileset, 0, 0);
+        // const supercoollayer = map.createLayer("Tile Layer 2", tileset, 0, 0);
 
         wallLayer.setCollisionByProperty({
             collides: true,
@@ -252,9 +256,9 @@ class Play extends Phaser.Scene {
         //     }
         // });
 
-        // this.physics.add.collider(this.players, wallLayer, null, null, this, () => {
-        //     console.log("TOUCH ME");
-        // });
+        this.physics.add.collider(this.players, wallLayer, null, null, this, () => {
+            console.log("TOUCH ME");
+        });
         this.physics.add.overlap(this.players, wallLayer, (player, wall) => {
             if (wall.canCollide) {
                 // player.x = game.config.width / 2;
