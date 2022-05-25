@@ -84,6 +84,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.facingx = 0;
         this.facingy = 0;
+
+        this.health = 0;
     }
 
     update(delta) {
@@ -316,7 +318,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    explode(playerExploder) {
+    explode(playerExploder, playerExplodee) {
         if (this.isLAUNCHING) {
             // not die
         }
@@ -324,6 +326,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             // die
             console.log("EPXLEOKDOEKFOJOSJIGJ");
             playerExploder.score += 1;
+            console.log(playerExploder.body.velocity);
+            let distance = playerExploder.body.velocity.x*playerExploder.body.velocity.x + playerExploder.body.velocity.y*playerExploder.body.velocity.y;
+            distance = sqrt(distance);
+
+            playerExplodee.health += 0.01 * distance;
+            console.log(playerExplodee.health);
 
             this.scene.cameras.main.shake(450, 0.022);
             this.scene.schmack.play();
