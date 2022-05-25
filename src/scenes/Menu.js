@@ -12,7 +12,7 @@ class Menu extends Phaser.Scene {
 
         this.add.text(10, 10, "Get Got!");
         let clickCount = 0;
-        this.clickButton = this.add.text(100, 100, 'Click me to start', { fill: '#0f0' })
+        this.clickButton = this.add.text(100, 100, 'Click me 4 tutorial', { fill: '#0f0' })
           .setInteractive({ useHandCursor: true })
           .on('pointerover', () => this.enterButtonHoverState() )
           .on('pointerout', () => this.enterButtonRestState() )
@@ -24,7 +24,7 @@ class Menu extends Phaser.Scene {
                 this.scene.start('tutorialScene');
             }
         });
-    
+
       }
     
       enterButtonHoverState() {
