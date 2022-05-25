@@ -91,6 +91,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.walkPoofVFXEffect.explode();
             }
         });
+
+        this.facingx = 0;
+        this.facingy = 0;
+
+        this.health = 0;
     }
 
     update(delta) {
@@ -179,6 +184,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     else if (this.charge >= 0.2) {  
                         this.launch(accelx, accely);        // LAUNCH!
                     }
+                } else {
+                    if (this.charge < 0.2) {
+                        //&& accelx != 0 || accely != 0
+                        console.log(this.facingx, this.facingy);
+                        this.slash(this.facingx, this.facingy);         // SLASH!
+                        // this.isCHARGING = false;
+                        // this.setMaxVelocity(this.SPEED, this.SPEED);        
+                    }
+                    else if (this.charge >= 0.2) {  
+                        this.launch(this.facingx, this.facingy);        // LAUNCH!
+                    }
                 }
                 console.log('Just UP charge button!!');
                 // if (accelx != 0 || accely != 0) {
@@ -221,13 +237,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_idle') {
                 this.anims.play(this.color+'player_triangle_idle');
             }
-        }
+        } 
         if (accelx < 0) {
             this.setFlipX(1);
+            this.facingx = -1;
+        } else if (accelx > 0) {
+            this.setFlipX(0);
+            this.facingx = 1;
+        } else if (accely != 0) {
+            this.facingx = 0;
         }
 
-        if (accelx > 0) {
-            this.setFlipX(0);
+        if (accely < 0) {
+            this.facingy = -1;
+        } else if (accely > 0) {
+            this.facingy = 1;
+        } else if (accelx != 0) {
+            this.facingy = 0;
         }
 
         this.setAcceleration(accelx, accely);
@@ -302,7 +328,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    explode(playerExploder) {
+    explode(playerExploder, playerExplodee) {
         if (this.isLAUNCHING) {
             // not die
         }
@@ -310,6 +336,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             // die
             console.log("EPXLEOKDOEKFOJOSJIGJ");
             playerExploder.score += 1;
+            //console.log(playerExploder.body.velocity);
+            
+            // ...body.velocity.distance() wasn't working
+            let magnitude = playerExploder.body.velocity.x*playerExploder.body.velocity.x + playerExploder.body.velocity.y*playerExploder.body.velocity.y;
+            magnitude = sqrt(magnitude);
+            playerExplodee.health += 0.01 * magnitude;
+            console.log(playerExplodee.health);
 
             this.scene.cameras.main.shake(450, 0.022);
             this.scene.schmack.play();
