@@ -186,7 +186,7 @@ class Play extends Phaser.Scene {
         this.players = this.add.group();
         
         this.player1 = new Player(this, 150, 200, 'REDplayer', 0, [keyW, keyS, keyA, keyD, keyF, keyG]);
-        this.player2 = new Player(this, 300, 200, 'BLUEplayer', 0, [keyUp, keyDown, keyLeft, keyRight, keyComma, keyPeriod]);
+        this.player2 = new Player(this, 300, 250, 'BLUEplayer', 0, [keyUp, keyDown, keyLeft, keyRight, keyComma, keyPeriod]);
         
         this.players.add(this.player1);
         this.players.add(this.player2);
@@ -234,11 +234,11 @@ class Play extends Phaser.Scene {
         });
 
 
-        const borderWidth = 10;
-        this.add.rectangle(0, 0, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
-        this.add.rectangle(0, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0, 0);
-        this.add.rectangle(0, game.config.height - borderWidth, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
-        this.add.rectangle(game.config.width - borderWidth, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0,0);
+        // const borderWidth = 10;
+        // this.add.rectangle(0, 0, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
+        // this.add.rectangle(0, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0, 0);
+        // this.add.rectangle(0, game.config.height - borderWidth, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
+        // this.add.rectangle(game.config.width - borderWidth, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0,0);
     
         const map = this.add.tilemap('wall_map');
 
@@ -256,30 +256,33 @@ class Play extends Phaser.Scene {
         //     }
         // });
 
-        this.physics.add.collider(this.players, wallLayer, null, null, this, () => {
-            console.log("TOUCH ME");
-        });
         this.physics.add.overlap(this.players, wallLayer, (player, wall) => {
             if (wall.canCollide) {
-                // player.x = game.config.width / 2;
-                // player.y = game.config.height / 2;
-                // same as world collide in Player.js
-                player.body.velocity = player.body.velocity.negate().scale(0.5);
-                // Note: this should use the while loop instead of the one move
-                // However the while loop currently freezes the game and the
-                // Hardcoded offset seems to work well enough
-                // TODO
-                //while (player.body.blocked && !player.body.onWorldBounds) {
-                    player.body.x += 0.05 * player.body.velocity.x;
-                    player.body.y += 0.05 * player.body.velocity.y;
-                //}
+                let wallx = wall.pixelX + 0.5 * wall.width;
+                let wally = wall.pixelY + 0.5 * wall.height;
+                
+                let playerx = player.x;
+                let playery = player.y;
+
+                let distance = new Phaser.Math.Vector2(playerx - wallx, playery - wally);
+                if (abs(distance.x) > abs(distance.y)) {
+                    if (distance.x < 0) {
+                        player.x -= wall.width + distance.x + 5;
+                    } else {
+                        player.x += wall.width - distance.x + 5;
+                    }
+                    player.body.velocity.x = -0.5 * player.body.velocity.x;
+                } else {
+                    if (distance.y < 0) {
+                        player.y -= wall.height + distance.y + 5;
+                    } else {
+                        player.y += wall.height - distance.y + 5;
+                    }
+                    player.body.velocity.y = -0.5 * player.body.velocity.y;
+                }
             }
             
         });
-        // there's just no collision for a reason, one which I refuse to believe
-        // this.physics.add.overlap(this.player1, supercoollayer, () => {
-        //     console.log("WEIRJIOWEJR");
-        // })
 
     }
 

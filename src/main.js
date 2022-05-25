@@ -1,5 +1,7 @@
 /** @type {import("../typings/phaser")} */
 
+const abs = Math.abs;
+
 let config = {
     type: Phaser.AUTO,
     width: 800,
