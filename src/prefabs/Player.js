@@ -15,7 +15,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.speedx = 0;
         this.speedy = 0;
 
+        this.bloodGroup = this.scene.add.group();
         this.score = 0;
+
+        this.setDepth(5);
 
         // Visuals
         this.setScale(SCALE);
@@ -216,7 +219,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             //         this.isCHARGING = true;
             //     }
             // };
-            console.log("CURRENT CHARGE: " + this.charge);
             this.setMaxVelocity(this.SPEED / 30);
             this.isCHARGING = true;
             this.charge += delta;
@@ -258,9 +260,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.setAcceleration(accelx, accely);
         
-        this.scene.physics.world.wrap(this, this.width*0.3, () => {
-            console.log("wrap");
-        });
+        this.scene.physics.world.wrap(this, this.width*0.3)
     }
     
 
@@ -335,14 +335,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         else if (!this.isEXPLODING) {
             // die
             console.log("EPXLEOKDOEKFOJOSJIGJ");
-            playerExploder.score += 1;
+            // playerExploder.score += 1;
+            this.addBlood(Math.random() * 4 + 5);
             //console.log(playerExploder.body.velocity);
             
             // ...body.velocity.distance() wasn't working
             let magnitude = playerExploder.body.velocity.x*playerExploder.body.velocity.x + playerExploder.body.velocity.y*playerExploder.body.velocity.y;
             magnitude = sqrt(magnitude);
             playerExplodee.health += 0.01 * magnitude;
-            console.log(playerExplodee.health);
+            console.log('Player health: ' + playerExplodee.health);
 
             this.scene.cameras.main.shake(450, 0.022);
             this.scene.schmack.play();
@@ -365,5 +366,36 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.isEXPLODING = false;
             });
         }
+    }
+
+    addBlood(amt) {
+        let bloodZone = new Phaser.Geom.Circle(this.x, this.y, this.width/2);
+        // this.scene.add.sprite(this.x, this.y, 'blood')
+        let splatter = new Blood(this.scene, this.x, this.y, this.color + '-bloodsplatter');
+        splatter.score = 15;
+        this.bloodGroup.add(splatter);
+        for (let i = 0; i < amt; i++) {
+            let point = bloodZone.getRandomPoint();
+            let blud = new Blood(this.scene, point.x, point.y, this.color + '-blood');
+            let randomX = ((Math.random() * 500) + 700) * (Math.round(Math.random()) * 2 - 1);
+            let randomY = ((Math.random() * 500) + 700) * (Math.round(Math.random()) * 2 - 1);
+            console.log('randomX: ' + randomX);
+            console.log('randomY: ' + randomY);
+            blud.setVelocity(randomX, randomY);
+            blud.score = 5;
+            this.bloodGroup.add(blud);
+            // let blud = this.scene.add.sprite(point.x, point.y, this.color + '-blood');
+        }
+        // console.log('blood Group: ', this.bloodGroup);
+    }
+
+    getScore() {
+        let score = 0;
+        for (let i = 0; i < this.bloodGroup.getLength(); i++) {
+            let blud = this.bloodGroup.getChildren();
+            score += blud[i].score;
+        }
+        this.score = score;
+        return score;
     }
 }

@@ -57,7 +57,10 @@ class Play extends Phaser.Scene {
         this.load.image('frog', 'FROG-200.png');
         this.load.image('background', 'background.png');
         this.load.image('poof', 'poof.png');
-        this.load.image('blood', 'BLUD.png');
+        this.load.image('BLUE-blood', 'BLU-BLUD.png');
+        this.load.image('RED-blood', 'RED-BLUD.png');
+        this.load.image('BLUE-bloodsplatter', 'BLUE-Blud-Splatter.png');
+        this.load.image('RED-bloodsplatter', 'RED-Blud-Splatter.png');
     }
 
     create() {
@@ -194,7 +197,6 @@ class Play extends Phaser.Scene {
         this.players.add(this.player1);
         this.players.add(this.player2);
 
-
         this.physics.world.setBounds(0, 0, game.config.width, game.config.height);
         console.log(this.physics.world.bounds);
 
@@ -220,11 +222,18 @@ class Play extends Phaser.Scene {
                 top: 5, 
                 bottom: 5,
             },
-            fixedWidth: 0
+            fixedWidth: 0,
         }
 
         this.endGameTimer = this.time.delayedCall(45000, () => {
             this.physics.pause();
+            for (let i = 0; i < this.players.getLength(); i++) {
+                // let meg = this.players.getChildren();
+                let player = this.players.getChildren();
+                console.log(player[i]);
+                // player[i].addBlood(6);
+                player[i].getScore();
+            }
             this.add.text(game.config.width/2, game.config.height*0.4, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
             this.add.text(game.config.width*0.4, game.config.height*0.5, 
                 'Player 1 Score:' + this.player1.score, textConfig).setOrigin(1, 0.5);
@@ -247,6 +256,7 @@ class Play extends Phaser.Scene {
 
         const tileset = map.addTilesetImage('Wall-Sheet', 'wall');
         const wallLayer = map.createLayer("Tile Layer 1", tileset, 0, 0);
+        wallLayer.setDepth(3);
         // const supercoollayer = map.createLayer("Tile Layer 2", tileset, 0, 0);
 
         wallLayer.setCollisionByProperty({
