@@ -65,7 +65,7 @@ class Play extends Phaser.Scene {
 
     create() {
         this.gameOver = false;
-        this.clock = 60;
+        this.clock = 90;
         
         // Set up sounds
         this.bloodexplode = this.sound.add('bloodexplode');
