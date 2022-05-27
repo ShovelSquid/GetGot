@@ -150,7 +150,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             !this.STUNNED &&
             !this.DEAD && 
             !this.IDLE) {
-                console.log("HWUEHRWERIUWHEURHUWEHRUWHRIUWHFIUHDWUIHF");
                 this.IDLE = true;
             }
 
@@ -216,7 +215,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     delay: 1,         // 0 for laser!!
                     callback: () => {
                         this.charge += delta;
-                        console.log('charge: ' + this.charge);
                         // this.chargesound.play();
                     },
                     loop: true,
@@ -254,7 +252,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setMaxVelocity(this.LAUNCHFACTOR*this.SPEED);     // max velocity is now higher than beforee
             this.setVelocity(velo.x, velo.y)            // setcurrent velocity to previous values
             this.setDrag(this.DRAG*0.6, this.DRAG*0.6);
-            console.log(this.charge);
             if (this.charge <= 0) {
                 this.LAUNCHING = false;
             }
@@ -354,7 +351,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     explode(playerExploder, playerExplodee) {
-        console.log("hello");
         if (this.LAUNCHING) {
             // not die
         }
@@ -405,8 +401,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             let blud = new Blood(this.scene, point.x, point.y, this.color + '-blood');
             let randomX = ((Math.random() * 500) + 700) * (Math.round(Math.random()) * 2 - 1);
             let randomY = ((Math.random() * 500) + 700) * (Math.round(Math.random()) * 2 - 1);
-            console.log('randomX: ' + randomX);
-            console.log('randomY: ' + randomY);
             blud.setVelocity(randomX, randomY);
             blud.score = 5;
             this.bloodGroup.add(blud);

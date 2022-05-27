@@ -193,10 +193,22 @@ class Play extends Phaser.Scene {
         this.bloodVFXManager = this.add.particles('splurt');
         this.poofVFXManager = this.add.particles('poof');
 
+        // const borderWidth = 10;
+        // this.add.rectangle(0, 0, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
+        // this.add.rectangle(0, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0, 0);
+        // this.add.rectangle(0, game.config.height - borderWidth, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
+        // this.add.rectangle(game.config.width - borderWidth, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0,0);
+    
+        const map = this.add.tilemap('wall_map');
+        const spawns = map.findObject("Objects", obj => obj.type === "spawn");
+        const redSpawn = map.findObject("Objects", obj => obj.name == "Player Spawn 1");
+        const blueSpawn = map.findObject("Objects", obj => obj.name == "Player Spawn 2");
+
+
         this.players = this.add.group();
         
-        this.player1 = new Player(this, 150, 200, 'REDplayer', 0, [keyW, keyS, keyA, keyD, keyF, keyG]);
-        this.player2 = new Player(this, 300, 250, 'BLUEplayer', 0, [keyUp, keyDown, keyLeft, keyRight, keyComma, keyPeriod]);
+        this.player1 = new Player(this, redSpawn.x, redSpawn.y, 'REDplayer', 0, [keyW, keyS, keyA, keyD, keyF, keyG]);
+        this.player2 = new Player(this, blueSpawn.x, blueSpawn.y, 'BLUEplayer', 0, [keyUp, keyDown, keyLeft, keyRight, keyComma, keyPeriod]);
         
         this.players.add(this.player1);
         this.players.add(this.player2);
@@ -213,58 +225,9 @@ class Play extends Phaser.Scene {
             }
         });
 
-        let textConfig = {
-            fontFamily: 'Courier',
-            fontSize: '48px',
-            backgroundColor: '#000000',
-            color: this.baseText,
-            align: 'right',
-            padding: {
-                top: 5, 
-                bottom: 5,
-            },
-            fixedWidth: 0,
-        }
-
-        this.endGameTimer = this.time.delayedCall(5000, () => {
-            this.physics.pause();
-            for (let i = 0; i < this.players.getLength(); i++) {
-                // let meg = this.players.getChildren();
-                let player = this.players.getChildren();
-                console.log(player[i]);
-                // player[i].addBlood(6);
-                player[i].getScore();
-            }
-            this.add.text(game.config.width/2, game.config.height*0.3, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
-            textConfig.color = this.redText;
-            this.add.text(game.config.width*0.45, game.config.height*0.4, 
-                'Red Blood: ' + this.player1.score + ' mL', textConfig).setOrigin(1, 0.5);
-            textConfig.color = this.blueText;
-            this.add.text(game.config.width*0.55, game.config.height*0.4, 
-                'Blue Blood: ' + this.player2.score + ' mL', textConfig).setOrigin(0, 0.5);
-            
-            let winner = this.decideWinner(textConfig);
-            console.log('scores: ' + this.players.score);
-            this.add.text(game.config.width*0.5, game.config.height*0.5, 
-                winner + ' wins!', textConfig).setOrigin(0.5, 0.5);
-            textConfig.color = this.baseText;
-            this.add.text(game.config.width*0.5, game.config.height*0.7,
-                'Press ENTER to restart!', textConfig).setOrigin(0.5, 0.5);
-
-            this.gameOver = true;
-        });
-
-
-        // const borderWidth = 10;
-        // this.add.rectangle(0, 0, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
-        // this.add.rectangle(0, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0, 0);
-        // this.add.rectangle(0, game.config.height - borderWidth, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
-        // this.add.rectangle(game.config.width - borderWidth, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0,0);
-    
-        const map = this.add.tilemap('wall_map');
 
         const tileset = map.addTilesetImage('Wall-Sheet', 'wall');
-        const wallLayer = map.createLayer("Tile Layer 1", tileset, 0, 0);
+        const wallLayer = map.createLayer("WallLayer", tileset, 0, 0);
         wallLayer.setDepth(3);
         // const supercoollayer = map.createLayer("Tile Layer 2", tileset, 0, 0);
 
@@ -306,6 +269,48 @@ class Play extends Phaser.Scene {
         });
         this.walls.canCollide = true;
 
+
+        let textConfig = {
+            fontFamily: 'Courier',
+            fontSize: '48px',
+            backgroundColor: '#000000',
+            color: this.baseText,
+            align: 'right',
+            padding: {
+                top: 5, 
+                bottom: 5,
+            },
+            fixedWidth: 0,
+            depth: 100,
+        }
+
+        this.endGameTimer = this.time.delayedCall(5000, () => {
+            this.physics.pause();
+            for (let i = 0; i < this.players.getLength(); i++) {
+                // let meg = this.players.getChildren();
+                let player = this.players.getChildren();
+                console.log(player[i]);
+                // player[i].addBlood(6);
+                player[i].getScore();
+            }
+            this.add.text(game.config.width/2, game.config.height*0.3, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
+            textConfig.color = this.redText;
+            this.add.text(game.config.width*0.45, game.config.height*0.4, 
+                'Red Blood: ' + this.player1.score + ' mL', textConfig).setOrigin(1, 0.5);
+            textConfig.color = this.blueText;
+            this.add.text(game.config.width*0.55, game.config.height*0.4, 
+                'Blue Blood: ' + this.player2.score + ' mL', textConfig).setOrigin(0, 0.5);
+            
+            let winner = this.decideWinner(textConfig);
+            console.log('scores: ' + this.players.score);
+            this.add.text(game.config.width*0.5, game.config.height*0.5, 
+                winner + ' wins!', textConfig).setOrigin(0.5, 0.5);
+            textConfig.color = this.baseText;
+            this.add.text(game.config.width*0.5, game.config.height*0.7,
+                'Press ENTER to restart!', textConfig).setOrigin(0.5, 0.5);
+
+            this.gameOver = true;
+        });
     }
 
     decideWinner(textConfig) {
