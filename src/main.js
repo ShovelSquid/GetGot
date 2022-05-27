@@ -1,9 +1,12 @@
 /** @type {import("../typings/phaser")} */
 
+const abs = Math.abs;
+const sqrt = Math.sqrt;
+
 let config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 2800,
+    height: 1600,
     scene: [Menu, Play, Tutorial,],
     fps: 60,
     physics: {
