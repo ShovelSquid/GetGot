@@ -23,6 +23,7 @@ class Menu extends Phaser.Scene {
       }
 
         this.add.text(10, 10, "Get Got!", textConfig);
+        // Tutorial button
         let clickCount = 0;
         textConfig.fill = '#0f0';
         textConfig.fontSize = '48px';
