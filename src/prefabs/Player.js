@@ -43,7 +43,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.kCharge = keys[5];
 
         this.charge = 0;
-        this.stunTime = 1000
+        this.stunTime = 1000;
+        this.MAXCHARGE = 1.5;
+        this.LAUNCHFACTOR = 10;
         ;   // in milliseconds
         // booleans
         // this.isCHARGING = false;
@@ -245,6 +247,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.body.speed == 0) {
                 this.resetIdle();
             }
+            this.charge -= delta;
+            let velo = this.body.velocity.normalize();  // apply factor to velocity directions
+            velo.x *= this.LAUNCHFACTOR * this.charge * this.SPEED;              
+            velo.y *= this.LAUNCHFACTOR * this.charge * this.SPEED;
+            this.setMaxVelocity(this.LAUNCHFACTOR*this.SPEED);     // max velocity is now higher than beforee
+            this.setVelocity(velo.x, velo.y)            // setcurrent velocity to previous values
+            this.setDrag(this.DRAG*0.6, this.DRAG*0.6);
+            console.log(this.charge);
+            if (this.charge <= 0) {
+                this.LAUNCHING = false;
+            }
+            
+            
         }
 
         if (this.body.acceleration.x < 0) {
@@ -319,17 +334,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     launch() {
-        let charge = this.charge;
         this.resetCharge();
         this.CHARGING = false;        // Set charge boolean to false
-        console.log("calling launch function");
-        const factor = 8 * charge;             // Get big factor number, scaled by time
+        console.log("calling launch function");         // Get big factor number, scaled by time
         let velo = this.body.velocity.normalize();  // apply factor to velocity directions
-        velo.x *= factor * this.SPEED;              
-        velo.y *= factor * this.SPEED;
+        velo.x *= this.LAUNCHFACTOR * this.charge * this.SPEED;              
+        velo.y *= this.LAUNCHFACTOR * this.charge * this.SPEED;
         if (this.body.acceleration.x != 0 || this.body.acceleration.y != 0) {
             this.LAUNCHING = true;                    // set launching to true
-            this.setMaxVelocity(factor*this.SPEED);     // max velocity is now higher than beforee
+            this.setMaxVelocity(this.LAUNCHFACTOR*this.SPEED);     // max velocity is now higher than beforee
             this.setVelocity(velo.x, velo.y)            // setcurrent velocity to previous values
             this.setDrag(this.DRAG*0.6, this.DRAG*0.6);
             // there's a thingy when you launch it gets crazy
@@ -418,7 +431,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         this.CHARGING = false;
         this.scene.time.removeEvent(this.chargeTimer);
-        this.charge = 0;
+        //this.charge = 0;
     }
 
     resetIdle() {
