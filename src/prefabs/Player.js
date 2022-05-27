@@ -323,24 +323,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.IDLE = false;
                 this.MOVING = false;
                 this.scene.charging.play();
-                this.flashTimer = this.scene.time.addEvent({
-                    delay: 250,
-                    callback: () => {
-                        this.setTintFill(0xffffff); // Make player flash white
-                        this.stopcall = this.scene.time.delayedCall(100, () => {
-                            // Remove the white flash after a bit
-                            this.clearTint();
-                        });
-                    },
-                    loop: true,
-                    paused: false,
-                    startAt: 15
-                });
                 this.chargeTimer = this.scene.time.addEvent({
                     delay: 1,         // 0 for laser!!
                     callback: () => {
                         this.charge += delta;
-                        this.scene.cameras.main.shake(250, 0.001 + this.charge / 1000); // We love the screen shake
                         // this.chargesound.play();
                     },
                     loop: true,
@@ -455,11 +441,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                     // Remove the white flash after a bit
                     player.clearTint();
                     player.body.enable = true;
-                });
+                })
                 this.stuncall = this.scene.time.delayedCall(this.stunTime, () => {
                     player.clearTint();
                     player.STUNNED = false;
-                });
+                })
                 destoryCall.elapsed = destoryCall.delay;
             }
             
@@ -569,7 +555,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         this.CHARGING = false;
         this.scene.time.removeEvent(this.chargeTimer);
-        this.scene.time.removeEvent(this.flashTimer);
         //this.charge = 0;
     }
 
