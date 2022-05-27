@@ -201,14 +201,11 @@ class Play extends Phaser.Scene {
         console.log(this.physics.world.bounds);
 
         this.physics.add.collider(this.players, this.players, () => {
-            if (this.player1.isLAUNCHING && this.player1.body.velocity.length() >= 2*this.player1.SPEED) {
+            if (this.player1.LAUNCHING && this.player1.body.velocity.length() >= 2*this.player1.SPEED) {
                 this.player2.explode(this.player1, this.player2);
-                console.log("Player1 score: ", this.player1.score);
             }
-            if (this.player2.isLAUNCHING && this.player2.body.velocity.length() >= 2*this.player2.SPEED) {
+            if (this.player2.LAUNCHING && this.player2.body.velocity.length() >= 2*this.player2.SPEED) {
                 this.player1.explode(this.player2, this.player1);
-                console.log("Player2 score: ", this.player2.score);
-
             }
         });
 
@@ -294,8 +291,8 @@ class Play extends Phaser.Scene {
                     player.body.velocity.y = -0.5 * player.body.velocity.y;
                 }
             }
-            
         });
+        this.walls.canCollide = true;
 
     }
 
