@@ -292,7 +292,7 @@ class Play extends Phaser.Scene {
             depth: 100,
         }
 
-        this.endGameTimer = this.time.delayedCall(5000, () => {
+        this.endGameTimer = this.time.delayedCall(50000, () => {
             this.physics.pause();
             for (let i = 0; i < this.players.getLength(); i++) {
                 // let meg = this.players.getChildren();

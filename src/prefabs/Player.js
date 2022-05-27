@@ -198,6 +198,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if (this.kRight.isDown) {
                 accelx += this.ACCELERATION;    // Increase right acceleration
             }
+        }
         this.setAcceleration(accelx, accely);   // set acceleration to previous accel values
 
         if (Phaser.Input.Keyboard.JustDown(this.kCharge)) {
