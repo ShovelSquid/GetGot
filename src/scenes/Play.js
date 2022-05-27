@@ -71,6 +71,10 @@ class Play extends Phaser.Scene {
         this.walking = this.sound.add('walking');
         this.charging = this.sound.add('charging');
 
+        this.redText = '#FF6622';
+        this.blueText = '#22AAFF';
+        this.baseText = '#FFFFAA';
+
 
         // RED Player Animations
         this.anims.create({
@@ -213,7 +217,7 @@ class Play extends Phaser.Scene {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#000000',
-            color: '#FFFFAA',
+            color: this.baseText,
             align: 'right',
             padding: {
                 top: 5, 
@@ -222,7 +226,7 @@ class Play extends Phaser.Scene {
             fixedWidth: 0,
         }
 
-        this.endGameTimer = this.time.delayedCall(45000, () => {
+        this.endGameTimer = this.time.delayedCall(5000, () => {
             this.physics.pause();
             for (let i = 0; i < this.players.getLength(); i++) {
                 // let meg = this.players.getChildren();
@@ -231,12 +235,20 @@ class Play extends Phaser.Scene {
                 // player[i].addBlood(6);
                 player[i].getScore();
             }
-            this.add.text(game.config.width/2, game.config.height*0.4, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
-            this.add.text(game.config.width*0.4, game.config.height*0.5, 
-                'Player 1 Score:' + this.player1.score, textConfig).setOrigin(1, 0.5);
-            this.add.text(game.config.width*0.6, game.config.height*0.5, 
-                'Player 2 Score:' + this.player2.score, textConfig).setOrigin(0, 0.5);
-            this.add.text(game.config.width*0.5, game.config.height*0.6, 
+            this.add.text(game.config.width/2, game.config.height*0.3, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
+            textConfig.color = this.redText;
+            this.add.text(game.config.width*0.45, game.config.height*0.4, 
+                'Red Blood: ' + this.player1.score + ' mL', textConfig).setOrigin(1, 0.5);
+            textConfig.color = this.blueText;
+            this.add.text(game.config.width*0.55, game.config.height*0.4, 
+                'Blue Blood: ' + this.player2.score + ' mL', textConfig).setOrigin(0, 0.5);
+            
+            let winner = this.decideWinner(textConfig);
+            console.log('scores: ' + this.players.score);
+            this.add.text(game.config.width*0.5, game.config.height*0.5, 
+                winner + ' wins!', textConfig).setOrigin(0.5, 0.5);
+            textConfig.color = this.baseText;
+            this.add.text(game.config.width*0.5, game.config.height*0.7,
                 'Press ENTER to restart!', textConfig).setOrigin(0.5, 0.5);
 
             this.gameOver = true;
@@ -294,6 +306,23 @@ class Play extends Phaser.Scene {
         });
         this.walls.canCollide = true;
 
+    }
+
+    decideWinner(textConfig) {
+        let winner = '';
+        if (this.player1.score < this.player2.score) {
+            winner = 'Red';
+            textConfig.color = this.redText;
+        }
+        else if (this.player2.score < this.player1.score) {
+            winner = 'Blue';
+            textConfig.color = this.blueText;
+        }
+        else {
+            winner = 'Nobody';
+            textConfig.color = this.baseText;
+        }
+        return winner;
     }
 
     update(time, delta) {
