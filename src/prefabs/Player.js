@@ -135,12 +135,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.scene.canvasbg.refresh();
         }
        
-        if (this.charge > 0 && !this.CHARGING && !this.LAUNCHING) {
-            //this.scene.charging.play();
-            this.setDrag(this.DRAG, this.DRAG);
-            this.charge -= delta;
-<<<<<<< HEAD
-        } else {
             
             
         this.setCollideWorldBounds(true, 0, 0);
@@ -149,7 +143,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (!this.isSLASHING && !this.STUNNED) {
             this.setDrag(this.DRAG, this.DRAG);
             this.setMaxVelocity(this.SPEED, this.SPEED);
-=======
         }
 
         // Need to have a state machine:
@@ -159,7 +152,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // Need a direction variable that can be persistent
         // Direction can be used to retain previous direction from moving,
         // That way players that release both charge and move don't get jiffied.
->>>>>>> 45dd92de5d07f907d655fbd93a1a87dd17dffe8c
 
         // INPUTS:
         if (!this.MOVING &&
@@ -211,7 +203,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 accelx -= this.ACCELERATION;    // Increase left acceleration
             }
             if (this.kRight.isDown) {
-<<<<<<< HEAD
                 accelx += this.ACCELERATION;
                 if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
                     this.anims.play(this.color+'player_triangle_run');
@@ -270,7 +261,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
             
-        }
+        
 
         if (!this.isLAUNCHING && this.kCharge.isDown && this.charge < 1.5) {
             this.setMaxVelocity(this.SPEED / 30);
@@ -303,7 +294,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (accelx == 0 && accely == 0) {
             if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_idle') {
                 this.anims.play(this.color+'player_triangle_idle');
-=======
                 accelx += this.ACCELERATION;    // Increase right acceleration
             }
         }
@@ -371,7 +361,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.LAUNCHING) {
             if (this.body.speed == 0) {
                 this.resetIdle();
->>>>>>> 45dd92de5d07f907d655fbd93a1a87dd17dffe8c
             }
             this.charge -= delta;
             let velo = this.body.velocity.normalize();  // apply factor to velocity directions
@@ -405,9 +394,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.facingy = 0;
         }
 
-<<<<<<< HEAD
         this.setAcceleration(accelx, accely);
-=======
         
         this.scene.physics.world.wrap(this, this.width*0.3)
     }
@@ -489,7 +476,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         else {
             this.charge = 0;        // Resets charge to 0 if you don't aim so that you don't get locked
         }
->>>>>>> 45dd92de5d07f907d655fbd93a1a87dd17dffe8c
     }
 
     explode(playerExploder, playerExplodee) {
