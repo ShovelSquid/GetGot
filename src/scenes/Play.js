@@ -65,6 +65,7 @@ class Play extends Phaser.Scene {
 
     create() {
         this.gameOver = false;
+        this.clock = 60;
         
         // Set up sounds
         this.bloodexplode = this.sound.add('bloodexplode');
@@ -255,6 +256,7 @@ class Play extends Phaser.Scene {
 
                 // Distance from center of wall
                 let distance = new Phaser.Math.Vector2(playerx - wallx, playery - wally);
+                this.hitwall.play();
 
                 // Do the smallest move
                 // The closest one is the greater distance
@@ -291,34 +293,20 @@ class Play extends Phaser.Scene {
             fixedWidth: 0,
             depth: 100,
         }
-
-        this.endGameTimer = this.time.delayedCall(50000, () => {
-            this.physics.pause();
-            for (let i = 0; i < this.players.getLength(); i++) {
-                // let meg = this.players.getChildren();
-                let player = this.players.getChildren();
-                console.log(player[i]);
-                // player[i].addBlood(6);
-                player[i].getScore();
-            }
-            // End Screen
-            this.add.text(game.config.width/2, game.config.height*0.3, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
-            textConfig.color = this.redText;
-            this.add.text(game.config.width*0.45, game.config.height*0.4, 
-                'Red Blood: ' + this.player1.score + ' mL', textConfig).setOrigin(1, 0.5);
-            textConfig.color = this.blueText;
-            this.add.text(game.config.width*0.55, game.config.height*0.4, 
-                'Blue Blood: ' + this.player2.score + ' mL', textConfig).setOrigin(0, 0.5);
-            
-            let winner = this.decideWinner(textConfig);
-            console.log('scores: ' + this.players.score);
-            this.add.text(game.config.width*0.5, game.config.height*0.5, 
-                winner + ' wins!', textConfig).setOrigin(0.5, 0.5);
-            textConfig.color = this.baseText;
-            this.add.text(game.config.width*0.5, game.config.height*0.7,
-                'Press ENTER to restart!', textConfig).setOrigin(0.5, 0.5);
-
-            this.gameOver = true;
+        this.clockText = this.add.text(game.config.width/2, game.config.height*0.1, 
+            'TIME: ' + this.clock, textConfig).setOrigin(0.5, 0.5);
+        this.clockcountdown = this.time.addEvent({
+            delay: 1000,
+            callback: () => {
+                this.clock -= 1;
+                this.clockText.text = 'TIME: ' + this.clock;
+                if (this.clock <= 0) {
+                    this.endGame(textConfig);
+                }
+            },
+            loop: true,
+            paused: false,
+            startAt: 1000,
         });
     }
 
@@ -339,6 +327,38 @@ class Play extends Phaser.Scene {
         return winner;
     }
 
+    endGame(textConfig) {
+        this.physics.pause();
+        for (let i = 0; i < this.players.getLength(); i++) {
+            // let meg = this.players.getChildren();
+            let player = this.players.getChildren();
+            console.log(player[i]);
+            // player[i].addBlood(6);
+            player[i].getScore();
+        };
+        this.time.removeEvent(this.clockcountdown);
+        // End Screen
+        this.add.text(game.config.width/2, game.config.height*0.3, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
+        textConfig.color = this.redText;
+        this.add.text(game.config.width*0.45, game.config.height*0.4, 
+            'Red Blood: ' + this.player1.score + ' mL', textConfig).setOrigin(1, 0.5);
+        textConfig.color = this.blueText;
+        this.add.text(game.config.width*0.55, game.config.height*0.4, 
+            'Blue Blood: ' + this.player2.score + ' mL', textConfig).setOrigin(0, 0.5);
+        
+        let winner = this.decideWinner(textConfig);
+        console.log('scores: ' + this.players.score);
+        this.add.text(game.config.width*0.5, game.config.height*0.5, 
+            winner + ' wins!', textConfig).setOrigin(0.5, 0.5);
+        textConfig.color = this.baseText;
+        this.add.text(game.config.width*0.5, game.config.height*0.7,
+            'Press ENTER to restart!', textConfig).setOrigin(0.5, 0.5);
+
+        this.gameOver = true;
+
+    }
+
+
     update(time, delta) {
         delta /= 1000; // Turn into seconds
 
@@ -350,4 +370,5 @@ class Play extends Phaser.Scene {
             this.scene.start('menuScene');
         }
     }
+
 }

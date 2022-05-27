@@ -94,7 +94,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.anims.play(this.color + 'player_triangle_idle');
         this.on('animationrepeat', () => {
             if (this.anims.currentAnim.key == this.color+'player_triangle_run') {
-                this.walkPoofVFXEffect.explode();
+                if (!this.LAUNCHING) {
+                    this.walkPoofVFXEffect.explode();
+                    this.scene.walking.play();    
+                }
             }
         });
 
@@ -214,6 +217,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.CHARGING = true;
                 this.IDLE = false;
                 this.MOVING = false;
+                this.scene.charging.play();
                 this.chargeTimer = this.scene.time.addEvent({
                     delay: 1,         // 0 for laser!!
                     callback: () => {
@@ -352,6 +356,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         velo.y *= this.LAUNCHFACTOR * this.charge * this.SPEED;
         if (this.body.acceleration.x != 0 || this.body.acceleration.y != 0) {
             this.LAUNCHING = true;                    // set launching to true
+            this.scene.schmack.play();
             this.setMaxVelocity(this.LAUNCHFACTOR*this.SPEED);     // max velocity is now higher than beforee
             this.setVelocity(velo.x, velo.y)            // setcurrent velocity to previous values
             this.setDrag(this.DRAG*0.6, this.DRAG*0.6);
