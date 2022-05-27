@@ -16,7 +16,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.speedx = 0;
         this.speedy = 0;
 
+        this.bloodGroup = this.scene.add.group();
         this.score = 0;
+
+        this.setDepth(5);
 
         // Visuals
         this.setScale(SCALE);
@@ -41,15 +44,26 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.kCharge = keys[5];
 
         this.charge = 0;
-        this.stunTime = 1000
-        ;   // in milliseconds
-        // states
-        this.isCHARGING = false;
-        this.isLAUNCHING = false;
-        this.isEXPLODING = false;
-        this.isSLASHING = false;
-        this.STUNNED = false;
+        this.stunTime = 1000;
+        this.MAXCHARGE = 1.5;
+        this.LAUNCHFACTOR = 10;   // in milliseconds
+        // booleans
+        // this.isCHARGING = false;
+        // this.isLAUNCHING = false;
+        // this.isEXPLODING = false;
+        // this.isSLASHING = false;
+        // this.STUNNED = false;
 
+        // State Machine
+        this.IDLE = true;
+        this.MOVING = false;
+        this.CHARGING = false;
+        this.LAUNCHING = false;
+        this.SLASHING = false;
+        this.STUNNED = false;
+        this.DEAD = false;
+      
+      
         // particles
         this.bloodVFXSplurtEffect = this.scene.bloodVFXManager.createEmitter({
             follow: this,
@@ -93,6 +107,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(delta) {
+        // console.log("IDLE: " + this.IDLE);
+        // console.log("MOVING: " + this.MOVING);
         let accelx = 0;
         let accely = 0;
 
@@ -116,149 +132,166 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.scene.canvasbg.refresh();
         }
        
-        if (this.charge > 0 && !this.isCHARGING) {
+        if (this.charge > 0 && !this.CHARGING && !this.LAUNCHING) {
             //this.scene.charging.play();
-            this.setDrag(0, 0);
+            this.setDrag(this.DRAG, this.DRAG);
             this.charge -= delta;
         }
-            
-            
-        // this.setCollideWorldBounds(true, 0, 0);
-        if (this.body.speed < this.SPEED ) {
-            this.isLAUNCHING = false;
-        }
-        if (!this.isSLASHING && !this.STUNNED) {
+
+        // Need to have a state machine:
+        // If launching, cannot move. Launching ends when speed is 0 during launch.
+        // Once done launching, can move.
+        // During launching, cannot alter speed, but can minisculely alter direction.
+        // Need a direction variable that can be persistent
+        // Direction can be used to retain previous direction from moving,
+        // That way players that release both charge and move don't get jiffied.
+
+        // INPUTS:
+        if (!this.MOVING &&
+            !this.CHARGING &&
+            !this.LAUNCHING &&
+            !this.SLASHING &&
+            !this.STUNNED &&
+            !this.DEAD && 
+            !this.IDLE) {
+                this.IDLE = true;
+            }
+
+        if (!this.SLASHING && !this.CHARGING && !this.LAUNCHING) {
             this.setDrag(this.DRAG, this.DRAG);
-            // this.setMaxVelocity(this.SPEED, this.SPEED);
-
-            // Need to have a state machine:
-            // If launching, cannot move. Launching ends when speed is 0 during launch.
-            // Once done launching, can move.
-            // During launching, cannot alter speed, but can minisculely alter direction.
-            // Need a direction variable that can be persistent
-            // Direction can be used to retain previous direction from moving,
-            // That way players that release both charge and move don't get jiffied.
-
-            if (this.kUp.isDown) {
-                accely -= this.ACCELERATION;
-                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                    this.anims.play(this.color+'player_triangle_run');
-                    //this.scene.walking.play();
-                }
-            }
-            if (this.kDown.isDown) {
-                accely += this.ACCELERATION;
-                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                    this.anims.play(this.color+'player_triangle_run');
-                    //this.scene.walking.play();
-                }
-            }
-            if (this.kLeft.isDown) {
-                accelx -= this.ACCELERATION;
-                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                    this.anims.play(this.color+'player_triangle_run');
-                    //this.scene.walking.play();
-                }
-            }
-            if (this.kRight.isDown) {
-                accelx += this.ACCELERATION;
-                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                    this.anims.play(this.color+'player_triangle_run');
-                    //this.scene.walking.play();
-                }
-            }
-
-            if (Phaser.Input.Keyboard.JustUp(this.kCharge)) {
-                // If the player is currently inputting...
-                if (accelx != 0 || accely != 0) {
-                    if (this.charge < 0.2) {
-                        this.slash(accelx, accely);         // SLASH!
-                        // this.isCHARGING = false;
-                        // this.setMaxVelocity(this.SPEED, this.SPEED);        
-                    }
-                    else if (this.charge >= 0.2) {  
-                        this.launch(accelx, accely);        // LAUNCH!
-                    }
-                } else {
-                    // Use previous direction information
-                    if (this.charge < 0.2) {
-                        console.log(this.facingx, this.facingy);
-                        this.slash(this.facingx, this.facingy);         // SLASH!
-                        // this.isCHARGING = false;
-                        // this.setMaxVelocity(this.SPEED, this.SPEED);        
-                    }
-                    else if (this.charge >= 0.2) {  
-                        this.launch(this.facingx, this.facingy);        // LAUNCH!
-                    }
-                }
-                // console.log('Just UP charge button!!');
+            this.setMaxVelocity(this.SPEED, this.SPEED);
+        }
+        if (this.kUp.isDown || this.kDown.isDown || this.kLeft.isDown || this.kRight.isDown) {
+            if (this.IDLE) {                    // If you are stationary and start moving, set moving to true
+                this.MOVING = true;
+                this.IDLE = false;
             }
         }
-
-        // Only launch if sufficient charge
-        if (this.charge >= 1.5) {
-            this.launch(accelx, accely);
+        else {
+            if (this.MOVING) {
+                this.MOVING = false;
+            }
         }
-
-        if (this.isLAUNCHING) {
-            console.log("LAUNCHINNNNNNGGGGGGGGG");
-        }
-
-        if (!this.isLAUNCHING && this.kCharge.isDown && this.charge < 1.5) {
-            console.log("CURRENT CHARGE: " + this.charge);
-            this.setMaxVelocity(this.SPEED / 30);
-            this.isCHARGING = true;
-            this.charge += delta;
-            if (this.anims.currentAnim.key !== this.color+'player_triangle_charge') {
-                this.anims.play(this.color+'player_triangle_charge');
-            };
-        } else {
-            this.isCHARGING = false;
-            this.charge = 0;
-        }
-        
-        if (accelx == 0 && accely == 0) {
-            // Make sure our animation is correct
-            // TODO doesn't work while launching / slashing
+        if (this.IDLE && !this.MOVING) {
+            // Play idle animation if idle
             if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_idle') {
                 this.anims.play(this.color+'player_triangle_idle');
             }
-        } 
+        }
+        if (this.MOVING || this.CHARGING) {
+            // Play moving animation if moving
+            if (this.MOVING) {
+                if (this.anims.currentAnim.key !== this.color+'player_triangle_run') {
+                    this.anims.play(this.color+'player_triangle_run');
+                    //this.scene.walking.play();
+                }
+            }
+            if (this.kUp.isDown) {
+                accely -= this.ACCELERATION;    // Increase up acceleration
+            }
+            if (this.kDown.isDown) {
+                accely += this.ACCELERATION;    // Increase down acceleration
+            }
+            if (this.kLeft.isDown) {
+                accelx -= this.ACCELERATION;    // Increase left acceleration
+            }
+            if (this.kRight.isDown) {
+                accelx += this.ACCELERATION;    // Increase right acceleration
+            }
+        this.setAcceleration(accelx, accely);   // set acceleration to previous accel values
 
-        // Save facing direction
-        if (accelx < 0) {
-            this.setFlipX(1); // have animation face correct dir
+        if (Phaser.Input.Keyboard.JustDown(this.kCharge)) {
+            if (this.canCharge()) {
+                console.log("We are now charging!");
+                // if this.charge < 1.5
+                // if (this.charge >= 0.2) {
+                //     if (!this.isCHARGING) {
+                //         this.isCHARGING = true;
+                //     }
+                // };
+                this.setMaxVelocity(this.SPEED / 30);
+                this.CHARGING = true;
+                this.IDLE = false;
+                this.MOVING = false;
+                this.chargeTimer = this.scene.time.addEvent({
+                    delay: 1,         // 0 for laser!!
+                    callback: () => {
+                        this.charge += delta;
+                        // this.chargesound.play();
+                    },
+                    loop: true,
+                    paused: false,
+                    startAt: 250
+                });
+                if (this.anims.currentAnim.key !== this.color+'player_triangle_charge') {
+                    this.anims.play(this.color+'player_triangle_charge');
+                };
+            }
+        }
+        if (Phaser.Input.Keyboard.JustUp(this.kCharge) || this.charge >= 1.5) {
+            if (this.CHARGING) {
+                // If the player is currently inputting...
+                console.log('CHARGE: ', this.charge);
+                if (this.charge < 0.2) {
+                    console.log("SLASHING!!");
+                    this.slash(this.facingx, this.facingy);     // SLASH!
+                }
+                else if (this.charge >= 0.2) {
+                    console.log("CHARGING!!");
+                    this.launch();                              // LAUNCH!
+                }
+                this.resetCharge();
+            }
+            console.log('Just UP charge button!!');
+        }
+        if (this.LAUNCHING) {
+            if (this.body.speed == 0) {
+                this.resetIdle();
+            }
+            this.charge -= delta;
+            let velo = this.body.velocity.normalize();  // apply factor to velocity directions
+            velo.x *= this.LAUNCHFACTOR * this.charge * this.SPEED;              
+            velo.y *= this.LAUNCHFACTOR * this.charge * this.SPEED;
+            this.setMaxVelocity(this.LAUNCHFACTOR*this.SPEED);     // max velocity is now higher than beforee
+            this.setVelocity(velo.x, velo.y)            // setcurrent velocity to previous values
+            this.setDrag(this.DRAG*0.6, this.DRAG*0.6);
+            if (this.charge <= 0) {
+                this.LAUNCHING = false;
+            }
+            
+            
+        }
+
+        if (this.body.acceleration.x < 0) {
+            this.setFlipX(1);
             this.facingx = -1;
-        } else if (accelx > 0) {
+        } else if (this.body.acceleration.x > 0) {
             this.setFlipX(0);
             this.facingx = 1;
-        } else if (accely != 0) {
+        } else if (this.body.acceleration.y != 0) {
             this.facingx = 0;
         }
 
-        if (accely < 0) {
+        if (this.body.acceleration.y < 0) {
             this.facingy = -1;
-        } else if (accely > 0) {
+        } else if (this.body.acceleration.y > 0) {
             this.facingy = 1;
-        } else if (accelx != 0) {
+        } else if (this.body.acceleration.x != 0) {
             this.facingy = 0;
         }
 
-        this.setAcceleration(accelx, accely);
         
-        this.scene.physics.world.wrap(this, this.width*0.3, () => {
-            console.log("wrap");
-        });
+        this.scene.physics.world.wrap(this, this.width*0.3)
     }
     
 
     slash(accelx, accely) {
-        this.isSLASHING = true;
-        this.setDrag(3 * this.DRAG, 3 * this.DRAG); // slow down player while slashing
-        let vec = new Phaser.Math.Vector2(accelx, accely).normalize(); // facing direction
-        
-        // move out the slash
-        const factor = 110; 
+        this.SLASHING = true;
+        this.CHARGING = false;
+        this.setDrag(3 * this.DRAG, 3 * this.DRAG);   // slow down player while slashing
+        let vec = new Phaser.Math.Vector2(accelx, accely).normalize();    // facing direction
+        // move out of the slash
+        const factor = 110;
         vec.x *= factor;
         vec.y *= factor;
         
@@ -274,7 +307,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         // remove slash when done
         let destoryCall = this.scene.time.delayedCall(500, () => {
-            this.isSLASHING = false;
+            this.IDLE = true;
+            this.SLASHING = false;
         });
 
         // if player launches into slash, bounce them back
@@ -307,17 +341,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         accelx = 0; accely = 0;
     }
 
-    launch(accelx, accely) {
-        this.isCHARGING = false;        // Set charge boolean to false
-        console.log("calling launch function");
+    launch() {
+        this.resetCharge();
+        this.CHARGING = false;        // Set charge boolean to false
+        console.log("calling launch function");         // Get big factor number, scaled by time
         const factor = 8 * this.charge;             // Get big factor number, scaled by time
         let velo = this.body.velocity.normalize();  // apply factor to velocity directions
-        velo.x *= factor * this.SPEED;              
-        velo.y *= factor * this.SPEED;
-        if (accelx != 0 || accely != 0) {
-            this.isLAUNCHING = true;                    // set launching to true
-            this.setMaxVelocity(factor*this.SPEED);     // max velocity is now higher than beforee
+        velo.x *= this.LAUNCHFACTOR * this.charge * this.SPEED;              
+        velo.y *= this.LAUNCHFACTOR * this.charge * this.SPEED;
+        if (this.body.acceleration.x != 0 || this.body.acceleration.y != 0) {
+            this.LAUNCHING = true;                    // set launching to true
+            this.setMaxVelocity(this.LAUNCHFACTOR*this.SPEED);     // max velocity is now higher than beforee
             this.setVelocity(velo.x, velo.y)            // setcurrent velocity to previous values
+            this.setDrag(this.DRAG*0.6, this.DRAG*0.6);
             // there's a thingy when you launch it gets crazy
             // this.setCollideWorldBounds(true, 0.5, 0.5);
         } 
@@ -327,27 +363,27 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     explode(playerExploder, playerExplodee) {
-        if (this.isLAUNCHING) {
+        if (this.LAUNCHING) {
             // not die
         }
-        else if (!this.isEXPLODING) {
+        else if (!this.DEAD) {
             // die
             console.log("EPXLEOKDOEKFOJOSJIGJ");
-            playerExploder.score += 1;
+            // playerExploder.score += 1;
+            this.addBlood(Math.random() * 4 + 5);
             //console.log(playerExploder.body.velocity);
             
             // ...body.velocity.distance() wasn't working
             let magnitude = playerExploder.body.velocity.x*playerExploder.body.velocity.x + playerExploder.body.velocity.y*playerExploder.body.velocity.y;
             magnitude = sqrt(magnitude);
             playerExplodee.health += 0.01 * magnitude;
-            console.log(playerExplodee.health);
+            console.log('Player health: ' + playerExplodee.health);
 
             this.scene.cameras.main.shake(450, 0.022); // we love the screen shake
             // play sounds
             this.scene.schmack.play();
             this.scene.bloodexplode.play();
-            
-            this.isEXPLODING = true;
+            this.DEAD = true;
             this.alpha = 0;
             this.body.enable = false;
             this.scene.physics.pause();
@@ -365,8 +401,68 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.alpha = 1;
                 this.body.enable = true;
                 // boom.destroy();
-                this.isEXPLODING = false;
+                this.DEAD = false;
             });
         }
+    }
+
+    addBlood(amt) {
+        let bloodZone = new Phaser.Geom.Circle(this.x, this.y, this.width/2);
+        // this.scene.add.sprite(this.x, this.y, 'blood')
+        let splatter = new Blood(this.scene, this.x, this.y, this.color + '-bloodsplatter');
+        splatter.score = 15;
+        this.bloodGroup.add(splatter);
+        for (let i = 0; i < amt; i++) {
+            let point = bloodZone.getRandomPoint();
+            let blud = new Blood(this.scene, point.x, point.y, this.color + '-blood');
+            let randomX = ((Math.random() * 500) + 700) * (Math.round(Math.random()) * 2 - 1);
+            let randomY = ((Math.random() * 500) + 700) * (Math.round(Math.random()) * 2 - 1);
+            blud.setVelocity(randomX, randomY);
+            blud.score = 5;
+            this.bloodGroup.add(blud);
+            // let blud = this.scene.add.sprite(point.x, point.y, this.color + '-blood');
+        }
+        // console.log('blood Group: ', this.bloodGroup);
+    }
+
+    getScore() {
+        let score = 0;
+        for (let i = 0; i < this.bloodGroup.getLength(); i++) {
+            let blud = this.bloodGroup.getChildren();
+            score += blud[i].score;
+        }
+        this.score = score;
+        return score;
+    }
+
+    resetCharge() {
+        if (!this.LAUNCHING && !this.SLASHING) {
+            this.IDLE = true;
+        }
+        this.CHARGING = false;
+        this.scene.time.removeEvent(this.chargeTimer);
+        //this.charge = 0;
+    }
+
+    resetIdle() {
+        this.IDLE = true;
+        this.LAUNCHING = false;
+        this.CHARGING = false;
+        this.DEAD = false;
+        this.STUNNED = false;
+        this.setDrag(this.DRAG, this.DRAG);
+        this.setAcceleration(0, 0);
+    }
+
+
+    // BOOLEANS
+    canCharge() {
+        console.log("Can we charge??");
+        if (!this.CHARGING && !this.DEAD && !this.LAUNCHING && !this.STUNNED) {
+            console.log("Yes we can!!");
+            return true;
+        }
+        console.log("No we can't :(");
+        return false;
     }
 }

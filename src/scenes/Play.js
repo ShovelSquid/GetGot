@@ -9,54 +9,58 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        // Sounds
-        this.load.audio('bloodexplode', './assets/bloodexplode.wav');
-        this.load.audio('hitwall', './assets/hitwall.wav');
-        this.load.audio('schmack', './assets/schmack.wav');
-        this.load.audio('walking', './assets/walking.wav');
-        this.load.audio('charging', './assets/charging.wav');
+        this.load.path = './assets/';
 
-        // Sprites
-        this.load.spritesheet('REDplayer', './assets/Player_Triangle-Sheet.png', {
+        this.load.audio('bloodexplode', 'bloodexplode.wav');
+        this.load.audio('hitwall', 'hitwall.wav');
+        this.load.audio('schmack', 'schmack.wav');
+        this.load.audio('walking', 'walking.wav');
+        this.load.audio('charging', 'charging.wav');
+
+        this.load.spritesheet('REDplayer', 'Player_Triangle-Sheet.png', {
             frameWidth: 100,
             frameHeight: 100,
             startFrame: 0,
             endFrame: 11,
         });
-        this.load.spritesheet('BLUEplayer', './assets/Player-Triangle-Sheet-Blue.png', {
+        this.load.spritesheet('BLUEplayer', 'Player-Triangle-Sheet-Blue.png', {
             frameWidth: 100,
             frameHeight: 100,
             startFrame: 0,
             endFrame: 11
         });
-        this.load.spritesheet('explosion', './assets/explosionado-Sheet.png', {
+        this.load.spritesheet('explosion', 'explosionado-Sheet.png', {
             frameWidth: 32,
             frameHeight: 32,
             startFrame: 0,
             endFrame: 4
         });
-        this.load.spritesheet('splurt', './assets/splurt-sheet.png', {
+        this.load.spritesheet('splurt', 'splurt-sheet.png', {
             frameWidth: 100,
             frameHeight: 100,
             startFrame: 0,
             endFrame: 1
         });
-        this.load.spritesheet('slash', './assets/Slash-Sheet.png', {
+        this.load.spritesheet('slash', 'Slash-Sheet.png', {
             frameWidth: 100,
             frameHeight: 100,
             startFrame: 0,
             endFrame: 2
         });
-        this.load.spritesheet('wall', './assets/Wall-Sheet.png', {      // Tiled tilesheet
+        this.load.spritesheet('wall', 'Wall-Sheet.png', {      // Tiled tilesheet
             frameWidth: 100,
             frameHeight: 100,
             startFrame: 0,
             endFrame: 9,
         });
-        this.load.tilemapTiledJSON('wall_map', './assets/tilemap01.json');       // Adds Tiled tilemap 
-        this.load.image('frog', './assets/FROG-200.png');
-        this.load.image('background', './assets/background.png');
-        this.load.image('poof', './assets/poof.png');
+        this.load.tilemapTiledJSON('wall_map', 'tilemap01.json');       // Adds Tiled tilemap 
+        this.load.image('frog', 'FROG-200.png');
+        this.load.image('background', 'background.png');
+        this.load.image('poof', 'poof.png');
+        this.load.image('BLUE-blood', 'BLU-BLUD.png');
+        this.load.image('RED-blood', 'RED-BLUD.png');
+        this.load.image('BLUE-bloodsplatter', 'BLUE-Blud-Splatter.png');
+        this.load.image('RED-bloodsplatter', 'RED-Blud-Splatter.png');
     }
 
     create() {
@@ -68,6 +72,10 @@ class Play extends Phaser.Scene {
         this.schmack = this.sound.add('schmack');
         this.walking = this.sound.add('walking');
         this.charging = this.sound.add('charging');
+
+        this.redText = '#FF6622';
+        this.blueText = '#22AAFF';
+        this.baseText = '#FFFFAA';
 
 
         // RED Player Animations
@@ -190,64 +198,45 @@ class Play extends Phaser.Scene {
         this.bloodVFXManager = this.add.particles('splurt');
         this.poofVFXManager = this.add.particles('poof');
 
+        // const borderWidth = 10;
+        // this.add.rectangle(0, 0, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
+        // this.add.rectangle(0, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0, 0);
+        // this.add.rectangle(0, game.config.height - borderWidth, game.config.width, borderWidth, 0x63452b).setOrigin(0,0);
+        // this.add.rectangle(game.config.width - borderWidth, 0, borderWidth, game.config.height, 0x63452b).setOrigin(0,0);
+      
+      
+        // Map of Walls
+        const map = this.add.tilemap('wall_map');
+        const spawns = map.findObject("Objects", obj => obj.type === "spawn");
+        const redSpawn = map.findObject("Objects", obj => obj.name == "Player Spawn 1");
+        const blueSpawn = map.findObject("Objects", obj => obj.name == "Player Spawn 2");
+
+
         // Add our player characters
         this.players = this.add.group();
         
-        this.player1 = new Player(this, 150, 200, 'REDplayer', 0, [keyW, keyS, keyA, keyD, keyF, keyG]);
-        this.player2 = new Player(this, 300, 250, 'BLUEplayer', 0, [keyUp, keyDown, keyLeft, keyRight, keyComma, keyPeriod]);
+        this.player1 = new Player(this, redSpawn.x, redSpawn.y, 'REDplayer', 0, [keyW, keyS, keyA, keyD, keyF, keyG]);
+        this.player2 = new Player(this, blueSpawn.x, blueSpawn.y, 'BLUEplayer', 0, [keyUp, keyDown, keyLeft, keyRight, keyComma, keyPeriod]);
         
         this.players.add(this.player1);
         this.players.add(this.player2);
-
 
         this.physics.world.setBounds(0, 0, game.config.width, game.config.height);
         // console.log(this.physics.world.bounds);
 
         // Explode when launching into each other
         this.physics.add.collider(this.players, this.players, () => {
-            if (this.player1.isLAUNCHING && this.player1.body.velocity.length() >= 2*this.player1.SPEED) {
+            if (this.player1.LAUNCHING && this.player1.body.velocity.length() >= 2*this.player1.SPEED) {
                 this.player2.explode(this.player1, this.player2);
-                console.log("Player1 score: ", this.player1.score);
             }
-            if (this.player2.isLAUNCHING && this.player2.body.velocity.length() >= 2*this.player2.SPEED) {
+            if (this.player2.LAUNCHING && this.player2.body.velocity.length() >= 2*this.player2.SPEED) {
                 this.player1.explode(this.player2, this.player1);
-                console.log("Player2 score: ", this.player2.score);
-
             }
         });
-
-        // Game timer
-        let textConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#000000',
-            color: '#FFFFAA',
-            align: 'right',
-            padding: {
-                top: 5, 
-                bottom: 5,
-            },
-            fixedWidth: 0
-        }
-        // End screen
-        this.endGameTimer = this.time.delayedCall(45000, () => {
-            this.physics.pause();
-            this.add.text(game.config.width/2, game.config.height*0.4, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
-            this.add.text(game.config.width*0.4, game.config.height*0.5, 
-                'Player 1 Score:' + this.player1.score, textConfig).setOrigin(1, 0.5);
-            this.add.text(game.config.width*0.6, game.config.height*0.5, 
-                'Player 2 Score:' + this.player2.score, textConfig).setOrigin(0, 0.5);
-            this.add.text(game.config.width*0.5, game.config.height*0.6, 
-                'Press ENTER to restart!', textConfig).setOrigin(0.5, 0.5);
-
-            this.gameOver = true;
-        });
-
-        // Map of walls
-        const map = this.add.tilemap('wall_map');
 
         const tileset = map.addTilesetImage('Wall-Sheet', 'wall');
-        const wallLayer = map.createLayer("Tile Layer 1", tileset, 0, 0);
+        const wallLayer = map.createLayer("WallLayer", tileset, 0, 0);
+        wallLayer.setDepth(3);
         // const supercoollayer = map.createLayer("Tile Layer 2", tileset, 0, 0);
 
         wallLayer.setCollisionByProperty({
@@ -285,9 +274,69 @@ class Play extends Phaser.Scene {
                     player.body.velocity.y = -0.5 * player.body.velocity.y; // bounce y
                 }
             }
-            
         });
+        this.walls.canCollide = true;
 
+
+        let textConfig = {
+            fontFamily: 'Courier',
+            fontSize: '48px',
+            backgroundColor: '#000000',
+            color: this.baseText,
+            align: 'right',
+            padding: {
+                top: 5, 
+                bottom: 5,
+            },
+            fixedWidth: 0,
+            depth: 100,
+        }
+
+        this.endGameTimer = this.time.delayedCall(5000, () => {
+            this.physics.pause();
+            for (let i = 0; i < this.players.getLength(); i++) {
+                // let meg = this.players.getChildren();
+                let player = this.players.getChildren();
+                console.log(player[i]);
+                // player[i].addBlood(6);
+                player[i].getScore();
+            }
+            // End Screen
+            this.add.text(game.config.width/2, game.config.height*0.3, 'Game Over!', textConfig).setOrigin(0.5, 0.5);
+            textConfig.color = this.redText;
+            this.add.text(game.config.width*0.45, game.config.height*0.4, 
+                'Red Blood: ' + this.player1.score + ' mL', textConfig).setOrigin(1, 0.5);
+            textConfig.color = this.blueText;
+            this.add.text(game.config.width*0.55, game.config.height*0.4, 
+                'Blue Blood: ' + this.player2.score + ' mL', textConfig).setOrigin(0, 0.5);
+            
+            let winner = this.decideWinner(textConfig);
+            console.log('scores: ' + this.players.score);
+            this.add.text(game.config.width*0.5, game.config.height*0.5, 
+                winner + ' wins!', textConfig).setOrigin(0.5, 0.5);
+            textConfig.color = this.baseText;
+            this.add.text(game.config.width*0.5, game.config.height*0.7,
+                'Press ENTER to restart!', textConfig).setOrigin(0.5, 0.5);
+
+            this.gameOver = true;
+        });
+    }
+
+    decideWinner(textConfig) {
+        let winner = '';
+        if (this.player1.score < this.player2.score) {
+            winner = 'Red';
+            textConfig.color = this.redText;
+        }
+        else if (this.player2.score < this.player1.score) {
+            winner = 'Blue';
+            textConfig.color = this.blueText;
+        }
+        else {
+            winner = 'Nobody';
+            textConfig.color = this.baseText;
+        }
+        return winner;
     }
 
     update(time, delta) {
