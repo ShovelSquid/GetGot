@@ -194,7 +194,8 @@ class Play extends Phaser.Scene {
         keyPeriod = this.input.keyboard.addKey(KeyCodes.PERIOD);
         
         // Enter for Restart
-        this.keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        keyEnter = this.input.keyboard.addKey(KeyCodes.ENTER);
+        keyEscape = this.input.keyboard.addKey(KeyCodes.ESC);
 
         this.bloodVFXManager = this.add.particles('splurt');
         this.poofVFXManager = this.add.particles('poof');
@@ -353,6 +354,8 @@ class Play extends Phaser.Scene {
         textConfig.color = this.baseText;
         this.add.text(game.config.width*0.5, game.config.height*0.7,
             'Press ENTER to restart!', textConfig).setOrigin(0.5, 0.5);
+        this.add.text(game.config.width*0.5, game.config.height*0.75,
+            'Press ESC to return to main menu!', textConfig).setOrigin(0.5, 0.5);
 
         this.gameOver = true;
 
@@ -365,8 +368,12 @@ class Play extends Phaser.Scene {
         this.player1.update(delta);
         this.player2.update(delta);
 
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.keyEnter)) {
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyEnter)) {
             console.log("_RESS");
+            this.scene.restart();
+        }
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyEscape)) {
+            console.log("_ESCC");
             this.scene.start('menuScene');
         }
     }

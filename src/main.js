@@ -8,7 +8,7 @@ let config = {
     width: 2800,
     height: 1600,
     scene: [Menu, Play, Tutorial,],
-    fps: 60,
+    fps: 1000,
     physics: {
         default: 'arcade',
         arcade: {
@@ -33,3 +33,5 @@ let keyUp, keyDown, keyLeft, keyRight;
 
 let keyF, keyG;
 let keyComma, keyPeriod;
+
+let keyEnter, keyEscape;
