@@ -246,6 +246,14 @@ class Play extends Phaser.Scene {
         });
         this.walls = this.add.group();
 
+        this.physics.add.collider(this.players, wallLayer, (player, wall) => {
+            console.log('collide');
+            if (player.LAUNCHING) {
+                this.hitwall.play();
+                player.hitDelay(250);
+            }
+        });
+
         // When a player hits a wall -> bounce off
         this.physics.add.overlap(this.players, wallLayer, (player, wall) => {
             if (wall.canCollide) {
@@ -257,7 +265,10 @@ class Play extends Phaser.Scene {
 
                 // Distance from center of wall
                 let distance = new Phaser.Math.Vector2(playerx - wallx, playery - wally);
-                this.hitwall.play();
+                if (player.LAUNCHING) {
+                    this.hitwall.play();
+                    player.hitDelay(250);
+                };
 
                 // Do the smallest move
                 // The closest one is the greater distance

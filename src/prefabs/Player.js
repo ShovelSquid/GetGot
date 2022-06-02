@@ -44,7 +44,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.kCharge = keys[5];
 
         this.charge = 0;
-        this.stunTime = 1000;
+        this.stunTime = 2000;
         this.MAXCHARGE = 1.5;
         this.LAUNCHFACTOR = 10;   // in milliseconds
         // booleans
@@ -107,6 +107,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         // Think smash percentage
         this.health = 0;
+        this.setBounce(0.8, 0.8);
     }
 
     update(delta) {
@@ -381,6 +382,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.charge = 0;        // Resets charge to 0 if you don't aim so that you don't get locked
         }
     }
+
+    hitDelay(time) {
+        this.setTintFill(0xffffff); // Make player flash white
+        this.body.enable = false;
+        this.scene.cameras.main.shake(time, 0.01); // We love the screen shake
+        this.scene.time.delayedCall(time, () => {
+            // Remove the white flash after a bit
+            this.clearTint();
+            this.body.enable = true;
+        });
+
+    };
 
     explode(playerExploder, playerExplodee) {
         if (this.LAUNCHING) {
