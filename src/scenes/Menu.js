@@ -5,7 +5,7 @@ class Menu extends Phaser.Scene {
 
     preload() {
       this.load.spritesheet('menu-sheet', './assets/menusheet.png', {
-        frameWidth: 1602, // lmao what is this res
+        frameWidth: 1602, //wotf
         frameHeight: 890,
         startFrame: 0,
         endFrame: 6
@@ -17,9 +17,8 @@ class Menu extends Phaser.Scene {
       this.anims.create({
         key: 'menu',
         frames: this.anims.generateFrameNames('menu-sheet', {start: 0, end: 7}),
-        frameRate: 5, // what was this?
+        frameRate: 5,
         loop: true,
-        //yoyo: true,
         repeat: -1,
       });
 
@@ -33,7 +32,7 @@ class Menu extends Phaser.Scene {
         let textConfig = {
           fontFamily: 'Courier',
           fontSize: '64px',
-          backgroundColor: '#000000',
+          //backgroundColor: '#000000',
           color: '#FFFFAA',
           align: 'right',
           padding: {
@@ -43,23 +42,22 @@ class Menu extends Phaser.Scene {
           fixedWidth: 0,
         }
 
-        this.add.text(10, 10, "Get Got!", textConfig);
         // Tutorial button
         let clickCount = 0;
-        textConfig.fill = '#0f0';
+        textConfig.fill = '#000';
         textConfig.fontSize = '48px';
-        this.tutorialButton = this.add.text(100, 200, 'Click me 4 tutorial', textConfig)
+        this.tutorialButton = this.add.text(1275, 1250, 'TUTORIAL', textConfig)
           .setInteractive({ useHandCursor: true })
-          .on('pointerover', function() { this.setStyle({ fill: '#ff0'}); })
-          .on('pointerout', function() { this.setStyle({ fill: '#0f0' }); })
-          .on('pointerdown', function() { this.setStyle({ fill: '#0ff' }); })
+          .on('pointerover', function() { this.setStyle({ fill: '#fff'}); })
+          .on('pointerout', function() { this.setStyle({ fill: '#000' }); })
+          .on('pointerdown', function() { this.setStyle({ fill: '#000' }); })
           .on('pointerup', () => { this.scene.start('tutorialScene'); });
 
-        this.playButton = this.add.text(100, 100, 'Click me 4 game', textConfig)
+        this.playButton = this.add.text(1245, 1100, 'START GAME', textConfig)
           .setInteractive({ useHandCursor: true })
-          .on('pointerover', function() { this.setStyle({ fill: '#ff0'}); })
-          .on('pointerout', function() { this.setStyle({ fill: '#0f0' }); })
-          .on('pointerdown', function() { this.setStyle({ fill: '#0ff' }); })
+          .on('pointerover', function() { this.setStyle({ fill: '#fff'}); })
+          .on('pointerout', function() { this.setStyle({ fill: '#000' }); })
+          .on('pointerdown', function() { this.setStyle({ fill: '#000' }); })
           .on('pointerup', () => { this.scene.start('playScene'); });
           
       }
