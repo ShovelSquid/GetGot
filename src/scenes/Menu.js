@@ -6,7 +6,7 @@ class Menu extends Phaser.Scene {
     preload() {
       this.load.spritesheet('menu-sheet', './assets/menusheet.png', {
         frameWidth: 1602, //wotf
-        frameHeight: 890,
+        frameHeight: 1000,
         startFrame: 0,
         endFrame: 6
       });
@@ -46,14 +46,14 @@ class Menu extends Phaser.Scene {
         let clickCount = 0;
         textConfig.fill = '#000';
         textConfig.fontSize = '48px';
-        this.tutorialButton = this.add.text(1275, 1250, 'TUTORIAL', textConfig)
+        this.tutorialButton = this.add.text(1275, 1150, 'TUTORIAL', textConfig)
           .setInteractive({ useHandCursor: true })
           .on('pointerover', function() { this.setStyle({ fill: '#fff'}); })
           .on('pointerout', function() { this.setStyle({ fill: '#000' }); })
           .on('pointerdown', function() { this.setStyle({ fill: '#000' }); })
           .on('pointerup', () => { this.scene.start('tutorialScene'); });
 
-        this.playButton = this.add.text(1245, 1100, 'START GAME', textConfig)
+        this.playButton = this.add.text(1245, 1000, 'START GAME', textConfig)
           .setInteractive({ useHandCursor: true })
           .on('pointerover', function() { this.setStyle({ fill: '#fff'}); })
           .on('pointerout', function() { this.setStyle({ fill: '#000' }); })
