@@ -4,12 +4,7 @@ class Tutorial extends Phaser.Scene {
     }
 
     preload(){
-        this.load.spritesheet('tutorial-sheet', './assets/tutsheet.png', {
-            frameWidth: 2197, //disgusting wotf
-            frameHeight: 1255,
-            startFrame: 0,
-            endFrame: 10
-        });
+        this.load.multiatlas('tutorial', './assets/tutorial-sheet-smaller/tutorial.json', '/assets/tutorial-sheet-smaller/');
     }
 
     create() {
@@ -18,18 +13,15 @@ class Tutorial extends Phaser.Scene {
 
         this.anims.create({
             key: 'tutorial',
-            frames: this.anims.generateFrameNames('tutorial-sheet', {start: 0, end: 10}),
+            frames: this.anims.generateFrameNames('tutorial', {start: 0, end: 19, prefix: 'frames/tutorial-sheet-smaller-', suffix: '.png'}),
             frameRate: 9,
             loop: true,
             repeat: -1
         });
-
-        let background = this.add.sprite(0, game.config.height / 2, 'tutorial', 0).setOrigin(0, 0.5);
-        background.anims.play('tutorial');        
         
-        // background.displayWidth = game.config.width;
-        // background.displayHeight = background.displayWidth * background.height / background.width;
-       
+        let scale = 1.3681640625; // don't question it
+        this.background = this.add.sprite(0, 0, 'tutorial', 0).setOrigin(0,0).setScale(scale, scale);
+        this.background.anims.play('tutorial');               
     }
 
     update() {

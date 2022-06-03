@@ -1,0 +1,1005 @@
+{
+	"textures": [
+		{
+			"image": "tutorial-0.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-0.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-0.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-1.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-2.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-10.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-3.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-11.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-4.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-12.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-4.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-5.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-13.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "frames/tutorial-sheet-smaller-18.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-5.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-6.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-14.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "frames/tutorial-sheet-smaller-19.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-6.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-7.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-15.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-7.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-8.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-16.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-8.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-9.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-17.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-9.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-10.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-10.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-11.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-11.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-12.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-4.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-12.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-13.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-5.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-13.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-14.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-6.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-14.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-15.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-7.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-15.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-16.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-8.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-16.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		},
+		{
+			"image": "tutorial-17.png",
+			"format": "RGB888",
+			"size": {
+				"w": 2048,
+				"h": 1171
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "frames/tutorial-sheet-smaller-9.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				},
+				{
+					"filename": "tutorial-17.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 2048,
+						"h": 1171
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 2048,
+						"h": 1171
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:a06b01d0c1d25eec48a1328a158fa9de:23f6fdbce63aff5423db14374c9be126:5073082cf473ae7e1fda2f44efd61085$"
+	}
+}
