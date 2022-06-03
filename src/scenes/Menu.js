@@ -25,6 +25,8 @@ class Menu extends Phaser.Scene {
     
     create() {
 
+      this.select = this.sound.add('select');
+
       this.anims.create({
         key: 'menu',
         frames: this.anims.generateFrameNames('menu-sheet', {start: 0, end: 6}),
@@ -63,7 +65,7 @@ class Menu extends Phaser.Scene {
           hoverSprite.play("wall");
           hoverSprite.x = startButton.x - startButton.width + 115;
           hoverSprite.y = startButton.y;
-
+          this.select.play();
       })
 
       startButton.on("pointerout", () => {
@@ -81,7 +83,7 @@ class Menu extends Phaser.Scene {
           hoverSprite.play("wall");
           hoverSprite.x = tutorialButton.x - tutorialButton.width + 185;
           hoverSprite.y = tutorialButton.y;
-
+          this.select.play();
       })
 
       tutorialButton.on("pointerout", () => {
@@ -91,35 +93,5 @@ class Menu extends Phaser.Scene {
       tutorialButton.on("pointerup", () => {
           this.scene.start('tutorialScene');
       })
-        // let textConfig = {
-        //   fontFamily: 'Courier',
-        //   fontSize: '64px',
-        //   //backgroundColor: '#000000',
-        //   color: '#FFFFAA',
-        //   align: 'right',
-        //   padding: {
-        //       top: 5, 
-        //       bottom: 5,
-        //   },
-        //   fixedWidth: 0,
-        // }
-        // // Tutorial button
-        // let clickCount = 0;
-        // textConfig.fill = '#000';
-        // textConfig.fontSize = '48px';
-        // this.tutorialButton = this.add.text(1275, 1150, 'TUTORIAL', textConfig)
-        //   .setInteractive({ useHandCursor: true })
-        //   .on('pointerover', function() { this.setStyle({ fill: '#fff'}); })
-        //   .on('pointerout', function() { this.setStyle({ fill: '#000' }); })
-        //   .on('pointerdown', function() { this.setStyle({ fill: '#000' }); })
-        //   .on('pointerup', () => { this.scene.start('tutorialScene'); });
-
-        // this.playButton = this.add.text(1245, 1000, 'START GAME', textConfig)
-        //   .setInteractive({ useHandCursor: true })
-        //   .on('pointerover', function() { this.setStyle({ fill: '#fff'}); })
-        //   .on('pointerout', function() { this.setStyle({ fill: '#000' }); })
-        //   .on('pointerdown', function() { this.setStyle({ fill: '#000' }); })
-        //   .on('pointerup', () => { this.scene.start('playScene'); });
-          
-      }
     }
+}

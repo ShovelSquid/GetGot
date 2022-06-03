@@ -18,6 +18,7 @@ class Play extends Phaser.Scene {
         this.load.audio('schmack', 'schmack.wav');
         this.load.audio('walking', 'walking.wav');
         this.load.audio('charging', 'charging.wav');
+        this.load.audio('slashing', 'slash.wav');
 
         this.load.spritesheet('REDplayer', 'Player_Triangle-Sheet.png', {
             frameWidth: 100,
@@ -80,6 +81,7 @@ class Play extends Phaser.Scene {
         this.schmack = this.sound.add('schmack');
         this.walking = this.sound.add('walking');
         this.charging = this.sound.add('charging');
+        this.slashing = this.sound.add('slashing');
 
         this.redText = '#FF6622';
         this.blueText = '#22AAFF';
