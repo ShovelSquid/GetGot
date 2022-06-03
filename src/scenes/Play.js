@@ -11,6 +11,8 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.path = './assets/';
 
+        this.load.audio('music', 'quirkymusic.mp3');
+
         this.load.audio('bloodexplode', 'bloodexplode.wav');
         this.load.audio('hitwall', 'hitwall.wav');
         this.load.audio('schmack', 'schmack.wav');
@@ -64,6 +66,11 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+
+        this.music = this.sound.add('music');
+        this.music.setLoop(true);
+        this.music.play();
+
         this.gameOver = false;
         this.clock = 90;
         
@@ -371,10 +378,12 @@ class Play extends Phaser.Scene {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyEnter)) {
             console.log("_RESS");
             this.scene.restart();
+            this.music.stop();
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyEscape)) {
             console.log("_ESCC");
             this.scene.start('menuScene');
+            this.music.stop();
         }
     }
 
