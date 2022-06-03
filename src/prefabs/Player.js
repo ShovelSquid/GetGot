@@ -33,7 +33,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
 
-        this.setCollideWorldBounds(true, 0, 0);
+        // this.setCollideWorldBounds(true, 0, 0);
         // The keyyyz
         this.kUp = keys[0];
         this.kDown = keys[1];
@@ -135,14 +135,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.scene.canvasbg.refresh();
         }
        
-            
-            
-        this.setCollideWorldBounds(true, 0, 0);
-        this.isLAUNCHING = false;
-
-        if (!this.isSLASHING && !this.STUNNED) {
+        if (this.charge > 0 && !this.CHARGING && !this.LAUNCHING) {
+            //this.scene.charging.play();
             this.setDrag(this.DRAG, this.DRAG);
-            this.setMaxVelocity(this.SPEED, this.SPEED);
+            this.charge -= delta;
         }
 
         // Need to have a state machine:
@@ -203,97 +199,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 accelx -= this.ACCELERATION;    // Increase left acceleration
             }
             if (this.kRight.isDown) {
-                accelx += this.ACCELERATION;
-                if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_run') {
-                    this.anims.play(this.color+'player_triangle_run');
-                    //this.scene.walking.play();
-                }
-            }
-
-            if (Phaser.Input.Keyboard.JustDown(this.kSlash)) {
-                if (accelx != 0 || accely != 0) {
-                    this.isSLASHING = true;
-                    this.setDrag(3 * this.DRAG, 3 * this.DRAG);
-                    let vec = new Phaser.Math.Vector2(accelx, accely).normalize();
-                    const factor = 110;
-                    vec.x *= factor;
-                    vec.y *= factor;
-                    let slash = this.scene.add.sprite(this.x + vec.x, this.y + vec.y, 'slash');
-                    slash.anims.play('player_slash');
-                    slash.on('animationcomplete', () => {
-                        slash.destroy();
-                    })
-                    this.scene.physics.add.existing(slash);
-                    slash.body.immovable = true;
-                    slash.rotation = vec.angle()+Math.PI/2;
-
-                    let destoryCall = this.scene.time.delayedCall(500, () => {
-                        this.isSLASHING = false;
-                    });
-
-                    let blocked = false;
-                    this.scene.physics.add.overlap(this.scene.players, slash, (player, sl) => {
-                        if (player != this && !blocked) {
-                            blocked = true;
-                            console.log("Get blocked!");
-                            let vech = player.body.velocity;
-                            player.body.velocity = new Phaser.Math.Vector2(100*vec.x, 100*vec.y);
-                            player.STUNNED = true;
-                            player.setTintFill(0xffffff);
-                            player.body.enable = false;
-                            this.scene.cameras.main.shake(250, 0.01)
-                            this.stopcall = this.scene.time.delayedCall(250, () => {
-                                player.clearTint();
-                                player.body.enable = true;
-                            })
-                            this.stuncall = this.scene.time.delayedCall(this.stunTime, () => {
-                                player.clearTint();
-                                player.STUNNED = false;
-                            })
-                            destoryCall.elapsed = destoryCall.delay;
-                        }
-                        
-                    });
-                    
-                    accelx = 0; accely = 0;
-                    
-                }                
-            }
-        }
-            
-        
-
-        if (!this.isLAUNCHING && this.kCharge.isDown && this.charge < 1.5) {
-            this.setMaxVelocity(this.SPEED / 30);
-            this.isCHARGING = true;
-            this.charge += delta;
-            if (this.anims.currentAnim.key !== this.color+'player_triangle_charge') {
-                this.anims.play(this.color+'player_triangle_charge');
-            }
-        }
-        if (Phaser.Input.Keyboard.JustUp(this.kCharge) || this.charge >= 1.5) {
-            this.isCHARGING = false;
-            const factor = 8 * this.charge;
-            let velo = this.body.velocity.normalize();
-            velo.x *= factor * this.SPEED;
-            velo.y *= factor * this.SPEED;
-
-            if (accelx != 0 || accely != 0) {
-                this.isLAUNCHING = true;
-                this.setMaxVelocity(factor * this.SPEED);
-                
-                this.setVelocity(velo.x, velo.y);
-                // there's a thingy when you launch it gets crazy
-                this.setCollideWorldBounds(true, 0.5, 0.5);
-            } else {
-                this.charge = 0;
-            }
-            
-        }
-        
-        if (accelx == 0 && accely == 0) {
-            if (!this.kCharge.isDown && this.anims.currentAnim.key !== this.color+'player_triangle_idle') {
-                this.anims.play(this.color+'player_triangle_idle');
                 accelx += this.ACCELERATION;    // Increase right acceleration
             }
         }
@@ -394,7 +299,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.facingy = 0;
         }
 
-        this.setAcceleration(accelx, accely);
         
         this.scene.physics.world.wrap(this, this.width*0.3)
     }
@@ -501,6 +405,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.scene.bloodexplode.play();
             this.DEAD = true;
             this.alpha = 0;
+            this.body.enable = false;
             this.scene.physics.pause();
             
             // Make explosion
@@ -514,6 +419,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.respawn = this.scene.time.delayedCall(2000, () => {
                 // TODO: move the player to random location
                 this.alpha = 1;
+                this.body.enable = true;
                 // boom.destroy();
                 this.DEAD = false;
             });

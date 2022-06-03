@@ -41,37 +41,26 @@ class Menu extends Phaser.Scene {
               bottom: 5,
           },
           fixedWidth: 0,
-      }
+        }
 
         this.add.text(10, 10, "Get Got!", textConfig);
         // Tutorial button
         let clickCount = 0;
         textConfig.fill = '#0f0';
         textConfig.fontSize = '48px';
-        this.clickButton = this.add.text(100, 100, 'Click me 4 tutorial', textConfig)
+        this.tutorialButton = this.add.text(100, 200, 'Click me 4 tutorial', textConfig)
           .setInteractive({ useHandCursor: true })
-          .on('pointerover', () => this.enterButtonHoverState() )
-          .on('pointerout', () => this.enterButtonRestState() )
-          .on('pointerdown', () => this.enterButtonActiveState() )
-          .on('pointerup', () => {
-            this.update(++clickCount);
-            this.enterButtonHoverState();
-            if (clickCount == 1) {
-                this.scene.start('tutorialScene');
-            }
-        });
+          .on('pointerover', function() { this.setStyle({ fill: '#ff0'}); })
+          .on('pointerout', function() { this.setStyle({ fill: '#0f0' }); })
+          .on('pointerdown', function() { this.setStyle({ fill: '#0ff' }); })
+          .on('pointerup', () => { this.scene.start('tutorialScene'); });
 
-      }
-    
-      enterButtonHoverState() {
-        this.clickButton.setStyle({ fill: '#ff0'});
-      }
-    
-      enterButtonRestState() {
-        this.clickButton.setStyle({ fill: '#0f0' });
-      }
-    
-      enterButtonActiveState() {
-        this.clickButton.setStyle({ fill: '#0ff' });
+        this.playButton = this.add.text(100, 100, 'Click me 4 game', textConfig)
+          .setInteractive({ useHandCursor: true })
+          .on('pointerover', function() { this.setStyle({ fill: '#ff0'}); })
+          .on('pointerout', function() { this.setStyle({ fill: '#0f0' }); })
+          .on('pointerdown', function() { this.setStyle({ fill: '#0ff' }); })
+          .on('pointerup', () => { this.scene.start('playScene'); });
+          
       }
     }
