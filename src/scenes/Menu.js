@@ -27,7 +27,7 @@ class Menu extends Phaser.Scene {
 
       this.anims.create({
         key: 'menu',
-        frames: this.anims.generateFrameNames('menu-sheet', {start: 0, end: 7}),
+        frames: this.anims.generateFrameNames('menu-sheet', {start: 0, end: 6}),
         frameRate: 5,
         loop: true,
         repeat: -1,
@@ -46,13 +46,16 @@ class Menu extends Phaser.Scene {
       hoverSprite.setScale(.6);
       hoverSprite.setVisible(false);
 
+      
+      //wall anim for buttons
       this.anims.create({
           key: "wall",
           frameRate: 7,
           repeat: -1,
           frames: this.anims.generateFrameNumbers('wall', {start: 0, end: 9})
       });
-
+      
+      //button machine go brr
       startButton.setInteractive();
 
       startButton.on("pointerover", () => {
