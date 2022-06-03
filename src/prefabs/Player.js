@@ -253,9 +253,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 console.log('CHARGE: ', this.charge);
                 if (this.charge < 0.2) {
                     console.log("SLASHING!!");
+                    this.scene.slashing.play();
                     this.slash(this.facingx, this.facingy);     // SLASH!
                 }
-                else if (this.charge >= 0.2) {
+                else if (this.charge >= 0.5) {
                     console.log("CHARGING!!");
                     this.launch();                              // LAUNCH!
                 }

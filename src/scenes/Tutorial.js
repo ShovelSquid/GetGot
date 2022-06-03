@@ -4,25 +4,24 @@ class Tutorial extends Phaser.Scene {
     }
 
     preload(){
-
+        this.load.multiatlas('tutorial', './assets/tutorial-sheet-smaller/tutorial.json', '/assets/tutorial-sheet-smaller/');
     }
 
     create() {
-        let textConfig = {
-            fontFamily: 'Courier',
-            fontSize: '64px',
-            backgroundColor: '#000000',
-            color: '#FFFFAA',
-            align: 'right',
-            padding: {
-                top: 5, 
-                bottom: 5,
-            },
-            fixedWidth: 0,
-        }
+
         this.keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-        this.add.text(game.config.width*0.2, game.config.height*0.1, "Tutorial: try not to get got", textConfig);
-        this.add.text(game.config.width*0.2, game.config.height*0.3, "Press Enter to start", textConfig);
+
+        this.anims.create({
+            key: 'tutorial',
+            frames: this.anims.generateFrameNames('tutorial', {start: 0, end: 19, prefix: 'frames/tutorial-sheet-smaller-', suffix: '.png'}),
+            frameRate: 9,
+            loop: true,
+            repeat: -1
+        });
+        
+        let scale = 1.3681640625; // don't question it
+        this.background = this.add.sprite(0, 0, 'tutorial', 0).setOrigin(0,0).setScale(scale, scale);
+        this.background.anims.play('tutorial');               
     }
 
     update() {

@@ -11,11 +11,14 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.path = './assets/';
 
+        this.load.audio('music', 'quirkymusic.mp3');
+
         this.load.audio('bloodexplode', 'bloodexplode.wav');
         this.load.audio('hitwall', 'hitwall.wav');
         this.load.audio('schmack', 'schmack.wav');
         this.load.audio('walking', 'walking.wav');
         this.load.audio('charging', 'charging.wav');
+        this.load.audio('slashing', 'slash.wav');
 
         this.load.spritesheet('REDplayer', 'Player_Triangle-Sheet.png', {
             frameWidth: 100,
@@ -64,6 +67,11 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+
+        this.music = this.sound.add('music');
+        this.music.setLoop(true);
+        this.music.play();
+
         this.gameOver = false;
         this.clock = 90;
         
@@ -73,6 +81,7 @@ class Play extends Phaser.Scene {
         this.schmack = this.sound.add('schmack');
         this.walking = this.sound.add('walking');
         this.charging = this.sound.add('charging');
+        this.slashing = this.sound.add('slashing');
 
         this.redText = '#FF6622';
         this.blueText = '#22AAFF';
@@ -371,10 +380,12 @@ class Play extends Phaser.Scene {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyEnter)) {
             console.log("_RESS");
             this.scene.restart();
+            this.music.stop();
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyEscape)) {
             console.log("_ESCC");
             this.scene.start('menuScene');
+            this.music.stop();
         }
     }
 
