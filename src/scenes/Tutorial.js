@@ -4,7 +4,7 @@ class Tutorial extends Phaser.Scene {
     }
 
     preload(){
-        this.load.multiatlas('tutorial', './assets/tutorial-sheet-smaller/tutorial.json', '/assets/tutorial-sheet-smaller/');
+        this.load.multiatlas('tutorial', './assets/tutorial-sheet-smaller/tutorial.json', './assets/tutorial-sheet-smaller/');
     }
 
     create() {
