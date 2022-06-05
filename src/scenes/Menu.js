@@ -15,6 +15,7 @@ class Menu extends Phaser.Scene {
 
       this.load.image('startbutton', './assets/select.png');
       this.load.image('tutorialbutton', './assets/tutorial.png');
+      this.load.image('creditsbutton', './assets/creditbutton.png');
 
       this.load.spritesheet('wall', './assets/Wall-Sheet.png', {
           frameHeight: 100,
@@ -43,6 +44,7 @@ class Menu extends Phaser.Scene {
 
       let startButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 1.5, "startbutton").setDepth(1);
       let tutorialButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 1.35, "tutorialbutton").setDepth(1);
+      let creditsButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 1.22, "creditsbutton").setDepth(1);
 
       let hoverSprite = this.add.sprite(100, 100, 'wall').setDepth(1);
       hoverSprite.setScale(.6);
@@ -92,6 +94,24 @@ class Menu extends Phaser.Scene {
 
       tutorialButton.on("pointerup", () => {
           this.scene.start('tutorialScene');
+      })
+
+      creditsButton.setInteractive();
+
+      creditsButton.on("pointerover", () => {
+          hoverSprite.setVisible(true);
+          hoverSprite.play("wall");
+          hoverSprite.x = creditsButton.x - creditsButton.width + 185;
+          hoverSprite.y = creditsButton.y;
+          this.select.play();
+      })
+
+      creditsButton.on("pointerout", () => {
+          hoverSprite.setVisible(false);
+      })
+
+      creditsButton.on("pointerup", () => {
+          this.scene.start('creditsScene');
       })
     }
 }
