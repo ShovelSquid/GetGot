@@ -11,6 +11,8 @@ class Menu extends Phaser.Scene {
         endFrame: 6
       });
 
+      this.load.audio('menumusic', './assets/menumusic.mp3');
+
       this.load.audio('select', './assets/select.wav');
 
       this.load.image('startbutton', './assets/select.png');
@@ -26,6 +28,9 @@ class Menu extends Phaser.Scene {
     create() {
 
       this.select = this.sound.add('select');
+      this.menumusic = this.sound.add('menumusic');
+      this.menumusic.setLoop(true);
+      this.menumusic.play();
 
       this.anims.create({
         key: 'menu',
@@ -74,6 +79,7 @@ class Menu extends Phaser.Scene {
 
       startButton.on("pointerup", () => {
           this.scene.start('playScene');
+          this.menumusic.stop();
       })
 
       tutorialButton.setInteractive();
@@ -92,6 +98,7 @@ class Menu extends Phaser.Scene {
 
       tutorialButton.on("pointerup", () => {
           this.scene.start('tutorialScene');
+          this.menumusic.stop();
       })
     }
 }

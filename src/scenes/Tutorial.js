@@ -4,6 +4,7 @@ class Tutorial extends Phaser.Scene {
     }
 
     preload(){
+        this.load.audio('menumusic', './assets/menumusic.mp3');
         this.load.multiatlas('tutorial', './assets/tutorial-sheet-smaller/tutorial.json', '/assets/tutorial-sheet-smaller/');
     }
 
