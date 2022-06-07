@@ -15,8 +15,9 @@ class Menu extends Phaser.Scene {
 
       this.load.audio('select', './assets/select.wav');
 
-      this.load.image('startbutton', './assets/select.png');
+      this.load.image('startbutton', './assets/start.png');
       this.load.image('tutorialbutton', './assets/tutorial.png');
+      this.load.image('creditsbutton', './assets/credits.png');
 
       this.load.spritesheet('wall', './assets/Wall-Sheet.png', {
           frameHeight: 100,
@@ -46,8 +47,9 @@ class Menu extends Phaser.Scene {
       background.displayWidth = game.config.width;
       background.displayHeight = background.displayWidth * background.height / background.width;
 
-      let startButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 1.5, "startbutton").setDepth(1);
-      let tutorialButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 1.35, "tutorialbutton").setDepth(1);
+      let startButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 2.5, "startbutton").setDepth(1);
+      let tutorialButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 1.5, "tutorialbutton").setDepth(1);
+      let creditsButton = this.add.image(this.game.renderer.width / 2, this.game.renderer.height / 1.35, "creditsbutton").setDepth(1);
 
       let hoverSprite = this.add.sprite(100, 100, 'wall').setDepth(1);
       hoverSprite.setScale(.6);
@@ -68,7 +70,7 @@ class Menu extends Phaser.Scene {
       startButton.on("pointerover", () => {
           hoverSprite.setVisible(true);
           hoverSprite.play("wall");
-          hoverSprite.x = startButton.x - startButton.width + 115;
+          hoverSprite.x = startButton.x - startButton.width + 250;
           hoverSprite.y = startButton.y;
           this.select.play();
       })
@@ -98,6 +100,25 @@ class Menu extends Phaser.Scene {
 
       tutorialButton.on("pointerup", () => {
           this.scene.start('tutorialScene');
+          this.menumusic.stop();
+      })
+
+      creditsButton.setInteractive();
+
+      creditsButton.on("pointerover", () => {
+          hoverSprite.setVisible(true);
+          hoverSprite.play("wall");
+          hoverSprite.x = creditsButton.x - creditsButton.width + 210;
+          hoverSprite.y = creditsButton.y;
+          this.select.play();
+      })
+
+      creditsButton.on("pointerout", () => {
+          hoverSprite.setVisible(false);
+      })
+
+      creditsButton.on("pointerup", () => {
+          //this.scene.start('tutorialScene');
           this.menumusic.stop();
       })
     }
