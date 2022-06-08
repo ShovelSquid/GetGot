@@ -121,5 +121,23 @@ class Menu extends Phaser.Scene {
           //this.scene.start('tutorialScene');
           this.menumusic.stop();
       })
+
+      creditsButton.setInteractive();
+
+      creditsButton.on("pointerover", () => {
+          hoverSprite.setVisible(true);
+          hoverSprite.play("wall");
+          hoverSprite.x = creditsButton.x - creditsButton.width + 185;
+          hoverSprite.y = creditsButton.y;
+          this.select.play();
+      })
+
+      creditsButton.on("pointerout", () => {
+          hoverSprite.setVisible(false);
+      })
+
+      creditsButton.on("pointerup", () => {
+          this.scene.start('creditsScene');
+      })
     }
 }
